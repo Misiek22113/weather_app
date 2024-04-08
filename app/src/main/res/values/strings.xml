@@ -3,4 +3,20 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="pressure">pressure</string>
+    <string name="humidity">humidity</string>
+    <string name="wind_speed">wind speed</string>
+    <string name="visibility">visibility</string>
+    <string name="sunrise">sunrise</string>
+    <string name="sunset">sunset</string>
+    <string name="clouds">clouds</string>
+    <string name="uv">UV index</string>
+    <string name="rain">rain</string>
+    <string name="snow">snow</string>
+    <string name="sunny">sunny</string>
+    <string name="weather">weather</string>
+    <string name="search_hint">Search for a city</string>
+    <string name="search">Search</string>
+    <string name="no_results">No results</string>
+    <string name="no_internet">No internet connection</string>
 </resources>
