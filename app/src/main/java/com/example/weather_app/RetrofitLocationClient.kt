@@ -8,10 +8,11 @@ import retrofit2.http.Query
 data class Location(
     val name: String,
     val lat: Double,
-    val lon: Double
+    val lon: Double,
+    val country: String
 )
 
-interface ApiService {
+interface ApiLocationService {
     @GET("geo/1.0/direct")
     fun getLocation(
         @Query("q") query: String,
@@ -20,15 +21,15 @@ interface ApiService {
     ): Call<List<Location>>
 }
 
-object RetrofitClient {
+object RetrofitLocationClient {
     private const val BASE_URL = "https://api.openweathermap.org/"
 
-    fun create(): ApiService {
+    fun create(): ApiLocationService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        return retrofit.create(ApiService::class.java)
+        return retrofit.create(ApiLocationService::class.java)
     }
 }

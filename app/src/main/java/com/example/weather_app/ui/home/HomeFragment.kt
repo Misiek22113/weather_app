@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather_app.databinding.FragmentHomeBinding
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 class HomeFragment : Fragment() {
 
@@ -39,7 +38,7 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
-        val apiService = RetrofitClient.create()
+        val apiService = RetrofitLocationClient.create()
 
         val call = apiService.getLocation("Warsaw", 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
 
@@ -49,8 +48,8 @@ class HomeFragment : Fragment() {
                 response: Response<List<Location>>
             ) {
                 if (response.isSuccessful) {
-                    val location = response.body()?.get(0)
-                    textView.text = location?.name
+                    val location = response.body()
+                    textView.text = location?.get(0).toString()
                     Log.i("Location", location.toString())
                 }
             }
