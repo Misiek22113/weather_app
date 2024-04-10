@@ -5,9 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.databinding.FragmentDashboardBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,13 +16,9 @@ import retrofit2.Response
 import com.example.weather_app.data.api.Location
 import com.example.weather_app.data.api.RetrofitLocationClient
 
-
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,14 +32,19 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
+        val apiService = RetrofitLocationClient.create()
+
+        val call = apiService.getLocation("Warsaw", 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
+
+        val textView = binding.textDashboard
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
 
-        val apiService = RetrofitLocationClient.create()
-
-        val call = apiService.getLocation("Warsaw", 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
+        val recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = LocationAdapter(emptyList())
+        recyclerView.adapter = adapter
 
         call.enqueue(object : Callback<List<Location>> {
             override fun onResponse(
@@ -53,6 +55,8 @@ class DashboardFragment : Fragment() {
                     val location = response.body()
                     textView.text = location?.get(0).toString()
                     Log.i("Location", location.toString())
+                    val locations: List<Location> = location ?: emptyList()
+                    adapter.updateLocations(locations)
                 }
             }
 
