@@ -36,11 +36,6 @@ class DashboardFragment : Fragment() {
 
         val call = apiService.getLocation("Warsaw", 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
 
-        val textView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = LocationAdapter(emptyList())
@@ -53,7 +48,6 @@ class DashboardFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val location = response.body()
-                    textView.text = location?.get(0).toString()
                     Log.i("Location", location.toString())
                     val locations: List<Location> = location ?: emptyList()
                     adapter.updateLocations(locations)
@@ -61,7 +55,7 @@ class DashboardFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<Location>>, t: Throwable) {
-                textView.text = "Error"
+//                textView.text = "Error"
             }
         })
 

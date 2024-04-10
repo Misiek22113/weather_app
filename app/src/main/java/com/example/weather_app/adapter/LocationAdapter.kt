@@ -14,8 +14,9 @@ import com.example.weather_app.data.api.Location
 class LocationAdapter(private var locations: List<Location>) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     class LocationViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView = view.findViewById(R.id.locationName)
+        val cityTextView: TextView = view.findViewById(R.id.cityName)
         val locationImage: ImageView = view.findViewById(R.id.locationImage)
+        val countryTextView: TextView = view.findViewById(R.id.countryName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -32,7 +33,8 @@ class LocationAdapter(private var locations: List<Location>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
         val location = locations[position]
-        holder.nameTextView.text = location.name
+        holder.cityTextView.text = location.name
+        holder.countryTextView.text = location.country
     }
 
     override fun getItemCount() = locations.size

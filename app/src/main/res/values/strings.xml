@@ -20,4 +20,5 @@
     <string name="search">Search</string>
     <string name="no_results">No results</string>
     <string name="no_internet">No internet connection</string>
+    <string name="textField">Search location</string>
 </resources>
