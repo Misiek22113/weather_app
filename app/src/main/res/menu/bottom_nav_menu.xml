@@ -11,4 +11,9 @@
         android:icon="@drawable/map_pin"
         android:title="@string/places" />
 
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/add_location"
+        android:title="@string/addLocation" />
+
 </menu>

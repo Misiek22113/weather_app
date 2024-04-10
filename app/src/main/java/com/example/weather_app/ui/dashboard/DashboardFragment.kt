@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,33 +32,6 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val apiService = RetrofitLocationClient.create()
-
-        val call = apiService.getLocation("Warsaw", 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
-
-        val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = LocationAdapter(emptyList())
-        recyclerView.adapter = adapter
-
-        call.enqueue(object : Callback<List<Location>> {
-            override fun onResponse(
-                call: Call<List<Location>>,
-                response: Response<List<Location>>
-            ) {
-                if (response.isSuccessful) {
-                    val location = response.body()
-                    Log.i("Location", location.toString())
-                    val locations: List<Location> = location ?: emptyList()
-                    adapter.updateLocations(locations)
-                }
-            }
-
-            override fun onFailure(call: Call<List<Location>>, t: Throwable) {
-//                textView.text = "Error"
-            }
-        })
 
         return root
     }
