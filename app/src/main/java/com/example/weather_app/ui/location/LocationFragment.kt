@@ -9,11 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.LocationAdapter
-import com.example.weather_app.databinding.FragmentDashboardBinding
+import com.example.weather_app.databinding.FragmentLocationBinding
 
 class LocationFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentLocationBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
 
@@ -23,7 +23,7 @@ class LocationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentLocationBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val recyclerView = binding.LocationRecyclerView
@@ -32,7 +32,7 @@ class LocationFragment : Fragment() {
         recyclerView.adapter = adapter
 
         viewModel.savedLocations.observe(viewLifecycleOwner) {
-            adapter.updateLocations(it)
+            locations -> adapter.updateLocations(locations)
         }
 
         return root
