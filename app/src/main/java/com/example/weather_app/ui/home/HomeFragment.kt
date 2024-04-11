@@ -22,6 +22,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -49,7 +50,10 @@ class HomeFragment : Fragment() {
         val call = apiService.getWeatherData(lat, lon, apiKey)
 
         call.enqueue(object : Callback<WeatherResponse> {
-            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+            override fun onResponse(
+                call: Call<WeatherResponse>,
+                response: Response<WeatherResponse>
+            ) {
                 if (response.isSuccessful) {
                     val weatherResponse = response.body()
                     textView.text = weatherResponse?.list?.get(0).toString()
