@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather_app.MainActivity
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
@@ -27,6 +28,13 @@ class SearchFragment : Fragment(), LocationCardClickListener {
     private val binding get() = _binding!!
 
     val adapter = SearchLocationAdapter(emptyList(), this)
+
+    //TODO finish this function to switch fragments
+    fun onNavigate(){
+//        (activity as MainActivity).navigateToLocation(
+//
+//        )
+    }
 
     private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
