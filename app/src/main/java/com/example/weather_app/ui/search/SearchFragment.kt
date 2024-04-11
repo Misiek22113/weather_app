@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
-import com.example.weather_app.adapter.LocationAdapter
+import com.example.weather_app.adapter.SearchLocationAdapter
+import com.example.weather_app.adapter.LocationCardClickListener
 import com.example.weather_app.data.api.Location
 import com.example.weather_app.data.api.RetrofitLocationClient
 import com.example.weather_app.databinding.FragmentSearchBinding
@@ -19,18 +19,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), LocationCardClickListener {
 
     private var _binding: FragmentSearchBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
 
     private val binding get() = _binding!!
 
-    val adapter = LocationAdapter(emptyList())
+    val adapter = SearchLocationAdapter(emptyList(), this)
+
+    override fun onLocationCardClick(location: Location) {
+        Log.i("Location", location.toString())
+        viewModel.addLocation(location)
+    }
 
     private fun fetchLocation(query: String, limit: Int, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {

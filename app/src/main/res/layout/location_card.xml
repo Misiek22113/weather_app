@@ -3,61 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/blue_400"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
+        android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
         android:backgroundTint="@color/green_400"
         app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:padding="5dp">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/locationImage"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:src="@drawable/map_pin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/cityName"
+                android:id="@+id/likeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/white"
-                android:textSize="18sp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.432"
-                app:layout_constraintStart_toEndOf="@+id/locationImage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.461" />
+                app:srcCompat="@drawable/outline_favorite_border_24" />
+
+            <ImageView
+                android:id="@+id/weatherIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sun" />
 
             <TextView
-                android:id="@+id/countryName"
+                android:id="@+id/temperatureText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:layout_marginStart="8dp"
+                android:text="@string/example_temp"
                 android:textColor="@color/white"
+                android:textSize="40sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.607"
-                app:layout_constraintStart_toEndOf="@+id/cityName"
+                app:layout_constraintStart_toEndOf="@+id/weatherIcon"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/locationNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="@string/example_location"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/likeButton"
+                app:layout_constraintStart_toEndOf="@+id/temperatureText"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

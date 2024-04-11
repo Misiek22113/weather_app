@@ -22,4 +22,6 @@
     <string name="no_internet">No internet connection</string>
     <string name="textField">Search location</string>
     <string name="addLocation">add location</string>
+    <string name="example_temp">28°</string>
+    <string name="example_location">London</string>
 </resources>
