@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
+import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.databinding.FragmentDashboardBinding
 
 class LocationFragment : Fragment() {
@@ -23,6 +25,11 @@ class LocationFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val recyclerView = binding.LocationRecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = LocationAdapter(emptyList())
+        recyclerView.adapter = adapter
 
         return root
     }

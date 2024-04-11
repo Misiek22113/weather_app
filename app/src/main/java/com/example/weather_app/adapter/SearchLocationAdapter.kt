@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
-import com.example.weather_app.data.api.Location
+import com.example.weather_app.data_classes.Location
 import com.example.weather_app.ui.search.SearchFragment
 
 interface LocationCardClickListener {

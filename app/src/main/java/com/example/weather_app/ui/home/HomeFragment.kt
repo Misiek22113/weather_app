@@ -11,11 +11,11 @@ import com.example.weather_app.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.weather_app.data.api.WeatherResponse
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.data.api.RetrofitWeatherClient
+import com.example.weather_app.data_classes.WeatherResponse
 
 
 class HomeFragment : Fragment() {

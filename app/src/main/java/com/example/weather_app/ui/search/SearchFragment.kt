@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
-import com.example.weather_app.data.api.Location
 import com.example.weather_app.data.api.RetrofitLocationClient
+import com.example.weather_app.data_classes.Location
 import com.example.weather_app.databinding.FragmentSearchBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

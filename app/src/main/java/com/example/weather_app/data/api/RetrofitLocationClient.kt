@@ -1,5 +1,6 @@
 package com.example.weather_app.data.api
 
+import com.example.weather_app.data_classes.Location
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -8,12 +9,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-data class Location(
-    val name: String,
-    val lat: Double,
-    val lon: Double,
-    val country: String
-)
+
 
 //TODO move to coroutine (change return Response not Call)
 interface ApiLocationService {
