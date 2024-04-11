@@ -9,9 +9,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
-
-//TODO move to coroutine (change return Response not Call)
 interface ApiLocationService {
     @GET("geo/1.0/direct")
     suspend fun getLocation(

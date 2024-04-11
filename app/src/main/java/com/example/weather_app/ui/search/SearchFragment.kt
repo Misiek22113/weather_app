@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
+import com.example.weather_app.data.api.RetrofitCurrentWeatherClient
 import com.example.weather_app.data.api.RetrofitLocationClient
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.databinding.FragmentSearchBinding
@@ -29,9 +30,27 @@ class SearchFragment : Fragment(), LocationCardClickListener {
 
     val adapter = SearchLocationAdapter(emptyList(), this)
 
+    private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = RetrofitCurrentWeatherClient.create().getLocation(lat, lon, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+                    Log.i("Location", locationResponse.toString())
+                    viewModel.addLocation(locationResponse!!)
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Location", errorBodyString)
+                }
+            }
+        }
+    }
+
     override fun onLocationCardClick(location: Location) {
         Log.i("Location", location.toString())
-        viewModel.addLocation(location)
+        fetchCurrentWeather(location.lat, location.lon, "4bf2d9ba39b3f65d6d56ced5607fee4b")
     }
 
     private fun fetchLocation(query: String, limit: Int, apiKey: String) {
@@ -50,7 +69,6 @@ class SearchFragment : Fragment(), LocationCardClickListener {
             }
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

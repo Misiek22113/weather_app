@@ -11,7 +11,6 @@ data class SavedLocation(
     val name: String,
     val lat: Double,
     val lon: Double,
-    val country: String,
     val isLiked: Boolean,
     val temperature: Double,
     val weather: String,
