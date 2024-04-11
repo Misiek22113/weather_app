@@ -13,13 +13,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.example.weather_app.data.api.WeatherResponse
 import android.util.Log
+import androidx.fragment.app.activityViewModels
+import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.data.api.RetrofitWeatherClient
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
+    private val viewModel: MainActivityViewModel by activityViewModels()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -29,14 +31,12 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
 

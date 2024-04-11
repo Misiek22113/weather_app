@@ -4,6 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,13 +15,14 @@ data class Location(
     val country: String
 )
 
+//TODO move to coroutine (change return Response not Call)
 interface ApiLocationService {
     @GET("geo/1.0/direct")
-    fun getLocation(
+    suspend fun getLocation(
         @Query("q") query: String,
         @Query("limit") limit: Int,
         @Query("appid") apiKey: String
-    ): Call<List<Location>>
+    ): Response<List<Location>>
 }
 
 object RetrofitLocationClient {
