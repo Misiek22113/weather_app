@@ -16,7 +16,10 @@ interface LocationCardClickListener {
     fun onLocationCardClick(location: Location)
 }
 
-class SearchLocationAdapter(private var locations: List<Location>, private val listener: SearchFragment) : RecyclerView.Adapter<SearchLocationAdapter.LocationViewHolder>() {
+class SearchLocationAdapter(
+    private var locations: List<Location>,
+    private val listener: SearchFragment
+) : RecyclerView.Adapter<SearchLocationAdapter.LocationViewHolder>() {
 
     inner class LocationViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val cityTextView: TextView = view.findViewById(R.id.cityName)
@@ -24,7 +27,7 @@ class SearchLocationAdapter(private var locations: List<Location>, private val l
         val countryTextView: TextView = view.findViewById(R.id.countryName)
 
         init {
-            view.setOnClickListener{
+            view.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val location = locations[position]
@@ -35,14 +38,15 @@ class SearchLocationAdapter(private var locations: List<Location>, private val l
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_location_card, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.search_location_card, parent, false)
         return LocationViewHolder(view)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateLocations(newLocations: List<Location>) {
         Log.i("LocationAdapter", newLocations.toString())
-       this.locations = newLocations
+        this.locations = newLocations
         notifyDataSetChanged()
     }
 

@@ -69,6 +69,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,19 +84,17 @@ class SearchFragment : Fragment(), LocationCardClickListener {
         recyclerView.adapter = adapter
 
         binding.locationSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     fetchLocation(query, 5, "4bf2d9ba39b3f65d6d56ced5607fee4b")
                 }
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
         })
-
-
 
         return root
     }
