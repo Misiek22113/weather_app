@@ -31,6 +31,10 @@ class LocationFragment : Fragment() {
         val adapter = LocationAdapter(emptyList())
         recyclerView.adapter = adapter
 
+        viewModel.savedLocations.observe(viewLifecycleOwner) {
+            adapter.updateLocations(it)
+        }
+
         return root
     }
 

@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
-import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.SavedLocation
 
 class LocationAdapter(private var locations: List<SavedLocation>) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
@@ -36,7 +35,7 @@ class LocationAdapter(private var locations: List<SavedLocation>) : RecyclerView
     }
 
     inner class LocationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cityTextView: TextView = view.findViewById(R.id.cityName)
+        val cityTextView: TextView = view.findViewById(R.id.locationNameText)
         val temperatureTextView: TextView = view.findViewById(R.id.temperatureText)
         val weatherImageView: ImageView = view.findViewById(R.id.weatherIcon)
         val likeImageView: ImageView = view.findViewById(R.id.likeIcon)
