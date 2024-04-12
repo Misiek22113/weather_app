@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.databinding.ActivityMainBinding
+import com.example.weather_app.ui.location.LocationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,5 +26,15 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
+    }
+
+    fun navigateToLocation() {
+        // Create a new instance of the fragment you want to display
+        val newFragment = LocationFragment()
+
+        // Replace the current fragment with the new one
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_activity_main, newFragment)
+            .commit()
     }
 }

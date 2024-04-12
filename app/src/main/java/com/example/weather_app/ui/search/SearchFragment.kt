@@ -27,14 +27,12 @@ class SearchFragment : Fragment(), LocationCardClickListener {
 
     private val binding get() = _binding!!
 
-    val adapter = SearchLocationAdapter(emptyList(), this)
-
-    //TODO finish this function to switch fragments
-    fun onNavigate(){
-//        (activity as MainActivity).navigateToLocation(
-//
-//        )
+    //TODO Fix bug that navbar don't know where it is
+    private fun onNavigate() {
+        (activity as MainActivity).navigateToLocation()
     }
+
+    val adapter = SearchLocationAdapter(emptyList(), this)
 
     private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -57,6 +55,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
     override fun onLocationCardClick(location: Location) {
         Log.i("Location", location.toString())
         fetchCurrentWeather(location.lat, location.lon, "4bf2d9ba39b3f65d6d56ced5607fee4b")
+        onNavigate()
     }
 
     private fun fetchLocation(query: String, limit: Int, apiKey: String) {
