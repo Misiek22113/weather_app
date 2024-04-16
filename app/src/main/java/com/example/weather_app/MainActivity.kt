@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+
     fun navigateToLocation() {
         // Create a new instance of the fragment you want to display
         val newFragment = LocationFragment()

@@ -30,4 +30,10 @@ class MainActivityViewModel : ViewModel() {
         locations.add(savedLocation)
         this.locations.value = locations
     }
+
+    fun deleteLocation(location: SavedLocation) {
+        val locations = locations.value?.toMutableList() ?: mutableListOf()
+        locations.remove(location)
+        this.locations.value = locations
+    }
 }
