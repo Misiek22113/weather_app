@@ -1,9 +1,11 @@
 package com.example.weather_app
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather_app.data.api.RetrofitWeatherClient
+import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.NewWeatherResponse
 import com.example.weather_app.data_classes.SavedLocation
 
@@ -21,7 +23,7 @@ class MainActivityViewModel : ViewModel() {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
-            location.coord.lat,
+            location.coord.lon,
             false,
             location.main.temp,
             location.weather[0].description
@@ -35,5 +37,13 @@ class MainActivityViewModel : ViewModel() {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
         this.locations.value = locations
+    }
+
+    fun isLocationSaved(location: Location): Boolean {
+        return locations.value?.any {
+            it.name == location.name &&
+                    it.lat == location.lat && it.lon == location.lon
+        }
+            ?: false
     }
 }

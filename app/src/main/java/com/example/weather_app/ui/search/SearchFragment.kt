@@ -24,15 +24,13 @@ class SearchFragment : Fragment(), LocationCardClickListener {
 
     private var _binding: FragmentSearchBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
-
     private val binding get() = _binding!!
+    private lateinit var adapter: SearchLocationAdapter
 
     //TODO Fix bug that navbar don't know where it is
     private fun onNavigate() {
         (activity as MainActivity).navigateToLocation()
     }
-
-    val adapter = SearchLocationAdapter(emptyList(), this)
 
     private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -41,6 +39,13 @@ class SearchFragment : Fragment(), LocationCardClickListener {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
                     Log.i("Location", locationResponse.toString())
+                    val newResponseObject = locationResponse
+                    if (newResponseObject != null) {
+                        newResponseObject.coord.lat = lat
+                    }
+                    if (newResponseObject != null) {
+                        newResponseObject.coord.lon = lon
+                    }
                     viewModel.addLocation(locationResponse!!)
                 }
             } else {
@@ -83,6 +88,8 @@ class SearchFragment : Fragment(), LocationCardClickListener {
 
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        adapter = SearchLocationAdapter(emptyList(), this, viewModel)
 
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)

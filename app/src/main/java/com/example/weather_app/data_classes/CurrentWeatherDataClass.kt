@@ -20,8 +20,8 @@ data class NewWeatherResponse(
 )
 
 data class NewCoord(
-    val lon: Double,
-    val lat: Double
+    var lon: Double,
+    var lat: Double
 )
 
 data class NewWeather(
