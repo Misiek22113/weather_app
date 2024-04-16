@@ -9,8 +9,8 @@ data class Location(
 
 data class SavedLocation(
     val name: String,
-    val lat: Double,
-    val lon: Double,
+    var lat: Double,
+    var lon: Double,
     val isLiked: Boolean,
     val temperature: Double,
     val weather: String,

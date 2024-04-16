@@ -38,15 +38,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
-                    Log.i("Location", locationResponse.toString())
-                    val newResponseObject = locationResponse
-                    if (newResponseObject != null) {
-                        newResponseObject.coord.lat = lat
-                    }
-                    if (newResponseObject != null) {
-                        newResponseObject.coord.lon = lon
-                    }
-                    viewModel.addLocation(locationResponse!!)
+                    viewModel.addLocation(locationResponse!!, lat, lon)
                 }
             } else {
                 response.errorBody()?.let {

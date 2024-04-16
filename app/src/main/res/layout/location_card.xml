@@ -41,7 +41,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/example_temp"
                 android:textColor="@color/white"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/weatherIcon"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
                 android:layout_marginVertical="10dp"
                 android:text="@string/example_location"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/deleteButton"
                 app:layout_constraintStart_toEndOf="@+id/temperatureText"

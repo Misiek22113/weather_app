@@ -19,7 +19,7 @@ class MainActivityViewModel : ViewModel() {
     private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
 
-    fun addLocation(location: NewWeatherResponse) {
+    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
@@ -28,6 +28,8 @@ class MainActivityViewModel : ViewModel() {
             location.main.temp,
             location.weather[0].description
         )
+        savedLocation.lat = lat
+        savedLocation.lon = lon
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.add(savedLocation)
         this.locations.value = locations

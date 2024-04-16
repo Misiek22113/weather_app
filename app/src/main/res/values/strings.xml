@@ -24,4 +24,5 @@
     <string name="addLocation">add location</string>
     <string name="example_temp">28°</string>
     <string name="example_location">London</string>
+    <string name="locations_fragment">Your Locations</string>
 </resources>
