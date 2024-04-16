@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.location
+package com.example.weather_app.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

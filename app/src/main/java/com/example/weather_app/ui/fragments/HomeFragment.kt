@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.home
+package com.example.weather_app.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.weather_app.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.databinding.ActivityMainBinding
-import com.example.weather_app.ui.location.LocationFragment
+import com.example.weather_app.ui.fragments.LocationFragment
 
 class MainActivity : AppCompatActivity() {
 

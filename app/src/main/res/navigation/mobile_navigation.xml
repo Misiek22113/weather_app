@@ -7,24 +7,23 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.weather_app.ui.home.HomeFragment"
+        android:name="com.example.weather_app.ui.fragments.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/locationFragment"
-        android:name="com.example.weather_app.ui.location.LocationFragment"
+        android:name="com.example.weather_app.ui.fragments.LocationFragment"
         android:label="@string/title_location"
         tools:layout="@layout/fragment_location" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.weather_app.ui.search.SearchFragment"
+        android:name="com.example.weather_app.ui.fragments.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_locationFragment"
             app:destination="@id/locationFragment" />
     </fragment>
-
 </navigation>

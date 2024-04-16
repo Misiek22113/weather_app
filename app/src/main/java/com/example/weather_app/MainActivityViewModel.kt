@@ -12,9 +12,6 @@ import com.example.weather_app.data_classes.SavedLocation
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
-    //TODO move data to sheared preferences!!!
-    //TODO look for serializable or parcelable to save data as data class
-
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
     private val locations = MutableLiveData<List<SavedLocation>>()

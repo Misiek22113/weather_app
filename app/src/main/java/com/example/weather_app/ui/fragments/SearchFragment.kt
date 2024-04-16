@@ -1,6 +1,5 @@
-package com.example.weather_app.ui.search
+package com.example.weather_app.ui.fragments
 
-import SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

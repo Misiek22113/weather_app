@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
 import com.example.weather_app.data_classes.Location
-import com.example.weather_app.ui.search.SearchFragment
+import com.example.weather_app.ui.fragments.SearchFragment
 
 interface LocationCardClickListener {
     fun onLocationCardClick(location: Location)
