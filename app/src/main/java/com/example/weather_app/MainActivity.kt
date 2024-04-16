@@ -29,12 +29,9 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
 
-        sharedPref = SharedPreferences(this)
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        val savedLocations = sharedPref.getLocations()
-        if (savedLocations != null) {
-            viewModel.setLocations(savedLocations)
-        }
+
+        viewModel.setLocations()
     }
 
 

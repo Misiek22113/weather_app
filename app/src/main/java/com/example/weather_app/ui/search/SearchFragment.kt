@@ -39,7 +39,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
-                    SharedPreferences( requireContext()).saveLocations(viewModel.addLocation(locationResponse!!, lat, lon))
+                    viewModel.addLocation(locationResponse!!, lat, lon)
                 }
             } else {
                 response.errorBody()?.let {

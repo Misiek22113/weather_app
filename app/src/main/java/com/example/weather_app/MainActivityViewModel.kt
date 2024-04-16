@@ -1,15 +1,16 @@
 package com.example.weather_app
 
 import SharedPreferences
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.NewWeatherResponse
 import com.example.weather_app.data_classes.SavedLocation
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     //TODO move data to sheared preferences!!!
     //TODO look for serializable or parcelable to save data as data class
@@ -18,8 +19,9 @@ class MainActivityViewModel : ViewModel() {
     var text = MutableLiveData<String>()
     private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
+    private val sharedPreferences = SharedPreferences(application)
 
-    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double): List<SavedLocation> {
+    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double){
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
@@ -33,13 +35,14 @@ class MainActivityViewModel : ViewModel() {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.add(savedLocation)
         this.locations.value = locations
-        return locations
+        sharedPreferences.saveLocations(locations)
     }
 
     fun deleteLocation(location: SavedLocation) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
         this.locations.value = locations
+        sharedPreferences.saveLocations(locations)
     }
 
     fun isLocationSaved(location: Location): Boolean {
@@ -50,7 +53,9 @@ class MainActivityViewModel : ViewModel() {
             ?: false
     }
 
-    fun setLocations(savedLocations: List<SavedLocation>) {
-        locations.value = savedLocations
+    fun setLocations() {
+        locations.value = sharedPreferences.getLocations()
     }
+
+
 }
