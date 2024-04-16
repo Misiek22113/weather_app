@@ -1,5 +1,6 @@
 package com.example.weather_app.ui.search
 
+import SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,7 +39,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
-                    viewModel.addLocation(locationResponse!!, lat, lon)
+                    SharedPreferences( requireContext()).saveLocations(viewModel.addLocation(locationResponse!!, lat, lon))
                 }
             } else {
                 response.errorBody()?.let {

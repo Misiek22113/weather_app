@@ -1,6 +1,6 @@
 package com.example.weather_app
 
-import android.util.Log
+import SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +19,7 @@ class MainActivityViewModel : ViewModel() {
     private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
 
-    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
+    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double): List<SavedLocation> {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
@@ -33,6 +33,7 @@ class MainActivityViewModel : ViewModel() {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.add(savedLocation)
         this.locations.value = locations
+        return locations
     }
 
     fun deleteLocation(location: SavedLocation) {
@@ -47,5 +48,9 @@ class MainActivityViewModel : ViewModel() {
                     it.lat == location.lat && it.lon == location.lon
         }
             ?: false
+    }
+
+    fun setLocations(savedLocations: List<SavedLocation>) {
+        locations.value = savedLocations
     }
 }
