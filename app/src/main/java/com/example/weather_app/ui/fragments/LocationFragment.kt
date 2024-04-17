@@ -2,6 +2,7 @@ package com.example.weather_app.ui.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
 import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.databinding.FragmentLocationBinding
+import com.example.weather_app.databinding.FragmentSettingsBinding
 
 class LocationFragment : Fragment() {
 
@@ -45,8 +47,15 @@ class LocationFragment : Fragment() {
     }
 
     private fun createDialog() {
+        var settingsBinding = FragmentSettingsBinding.inflate(layoutInflater)
+
         val alertDialog = AlertDialog.Builder(this.requireContext());
-        alertDialog.setView(R.layout.fragment_settings)
+        alertDialog.setView(settingsBinding.root)
+
+        settingsBinding.temperatureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.setTemperatureUnit(isChecked)
+        }
+
         alertDialog.show()
     }
 

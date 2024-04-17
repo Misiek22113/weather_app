@@ -8,6 +8,7 @@ class SharedPreferences(context: Context) {
     private val gson = Gson()
     private val locationsKey = "locations"
     private val weatherLocationKey = "weather_location"
+    private val temperatureUnitKey = "temperature_unit"
 
     fun saveLocations(location: List<SavedLocation>) {
         val locationJson = gson.toJson(location)
@@ -41,5 +42,9 @@ class SharedPreferences(context: Context) {
         } else {
             null
         }
+    }
+
+    fun setTemperatureUnit(unit: String) {
+        sharedPref.edit().putString(temperatureUnitKey, unit).apply()
     }
 }
