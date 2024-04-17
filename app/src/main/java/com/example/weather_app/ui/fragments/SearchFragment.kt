@@ -32,6 +32,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
         (activity as MainActivity).navigateToLocation()
     }
 
+    //TODO move all fetches to viewmodel
     private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = viewModel.retrofit.getCurrentWeather(lat, lon, apiKey)

@@ -1,16 +1,16 @@
 package com.example.weather_app.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
+import com.example.weather_app.R
 import com.example.weather_app.adapter.LocationAdapter
-import com.example.weather_app.data_classes.SavedLocation
 import com.example.weather_app.databinding.FragmentLocationBinding
 
 class LocationFragment : Fragment() {
@@ -37,7 +37,17 @@ class LocationFragment : Fragment() {
             adapter.updateLocations(locations)
         }
 
+        binding.settingsButton.setOnClickListener {
+            createDialog()
+        }
+
         return root
+    }
+
+    private fun createDialog() {
+        val alertDialog = AlertDialog.Builder(this.requireContext());
+        alertDialog.setView(R.layout.fragment_settings)
+        alertDialog.show()
     }
 
     override fun onDestroyView() {

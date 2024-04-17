@@ -28,11 +28,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/textField"
+        android:queryHint="@string/textField"
         android:imeOptions="actionSearch"
         android:isScrollContainer="false"
         android:inputType="text"
         android:iconifiedByDefault="false"
-        app:queryBackground="@android:color/transparent" />
+        app:queryBackground="@android:color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,13 +30,14 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
+    private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
         CoroutineScope(Dispatchers.IO).launch {
             val response = viewModel.retrofit.getCurrentWeather(lat, lon, apiKey)
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
-                    viewModel.addLocation(locationResponse!!, lat, lon)
+//                    textView.text = weatherResponse?.list?.get(0).toString()
+                    Log.i("Location", locationResponse.toString())
                 }
             } else {
                 response.errorBody()?.let {

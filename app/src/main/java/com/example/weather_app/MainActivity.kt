@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.setLocations()
     }
 
+    private fun setUpSettingsDialog(){
+
+    };
 
     fun navigateToLocation() {
         // Create a new instance of the fragment you want to display
