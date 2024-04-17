@@ -13,11 +13,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 //TODO move to coroutine (change return Response not Call)
 interface ApiWeatherService {
     @GET("data/2.5/forecast")
-    fun getWeatherData(
+    suspend fun getWeatherData(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String
-    ): Call<WeatherResponse>
+    ): Response<WeatherResponse>
 
     @GET("geo/1.0/direct")
     suspend fun getCurrentWeather(

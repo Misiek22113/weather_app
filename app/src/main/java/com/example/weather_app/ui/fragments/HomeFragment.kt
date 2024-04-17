@@ -15,6 +15,10 @@ import androidx.fragment.app.activityViewModels
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.WeatherResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HomeFragment : Fragment() {
@@ -25,6 +29,23 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = viewModel.retrofit.getCurrentWeather(lat, lon, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+                    viewModel.addLocation(locationResponse!!, lat, lon)
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Location", errorBodyString)
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,36 +61,11 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
-        val apiService = RetrofitWeatherClient.create()
-
         val lat = 52.2319581
         val lon = 21.0067249
         val apiKey = "4bf2d9ba39b3f65d6d56ced5607fee4b"
 
-        val call = apiService.getWeatherData(lat, lon, apiKey)
-
-        call.enqueue(object : Callback<WeatherResponse> {
-            override fun onResponse(
-                call: Call<WeatherResponse>,
-                response: Response<WeatherResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val weatherResponse = response.body()
-                    textView.text = weatherResponse?.list?.get(0).toString()
-                    Log.i("Weather", "Temperature: ${weatherResponse?.list?.get(0)?.main?.temp}")
-                } else {
-                    response.errorBody()?.let {
-                        val errorBodyString = it.string()
-                        Log.i("Weather", errorBodyString)
-                    }
-                }
-
-            }
-
-            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                // Obsłuż błąd zapytania
-            }
-        })
+        fetchCurrentWeather(lat, lon, apiKey)
 
         return root
     }
