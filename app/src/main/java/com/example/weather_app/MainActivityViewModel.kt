@@ -55,7 +55,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun setTemperatureUnit(isChecked: Boolean) {
-        val unit = if (isChecked) "celsius" else "fahrenheit"
+        val unit = if (isChecked) "celsius" else "kelvin"
         sharedPreferences.setTemperatureUnit(unit)
     }
 
