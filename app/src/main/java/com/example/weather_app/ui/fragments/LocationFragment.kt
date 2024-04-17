@@ -1,5 +1,6 @@
 package com.example.weather_app.ui.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
@@ -46,14 +47,25 @@ class LocationFragment : Fragment() {
         return root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun createDialog() {
-        var settingsBinding = FragmentSettingsBinding.inflate(layoutInflater)
+        val settingsBinding = FragmentSettingsBinding.inflate(layoutInflater)
 
         val alertDialog = AlertDialog.Builder(this.requireContext());
         alertDialog.setView(settingsBinding.root)
 
+        val sharedPreferences = viewModel.getTemperatureUnit()
+
+        settingsBinding.temperatureSwitch.isChecked = sharedPreferences == "celsius"
+
         settingsBinding.temperatureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setTemperatureUnit(isChecked)
+            binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
+        }
+
+        settingsBinding.speedSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.setSpeedUnit(isChecked)
+            binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
         }
 
         alertDialog.show()

@@ -26,7 +26,7 @@
     <string name="example_location">London</string>
     <string name="locations_fragment">Your Locations</string>
     <string name="celsius">Celsius</string>
-    <string name="fahrenheit">Fahrenheit</string>
+    <string name="kelvin">Kelvin</string>
     <string name="meters_per_second">m/s</string>
-    <string name="miles_per_hour">mi/h</string>
+    <string name="miles_per_hour">mph</string>
 </resources>

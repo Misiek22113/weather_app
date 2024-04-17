@@ -58,4 +58,33 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         val unit = if (isChecked) "celsius" else "fahrenheit"
         sharedPreferences.setTemperatureUnit(unit)
     }
+
+    fun getTemperatureUnit(): String {
+        return sharedPreferences.getTemperatureUnit()
+    }
+
+    fun getTemperature(temp: Double): Int {
+        val unit = sharedPreferences.getTemperatureUnit()
+        if(unit == "celsius") {
+            return (temp - 273.15).toInt()
+        }
+        else {
+            return temp.toInt()
+        }
+    }
+
+    fun setSpeedUnit(isChecked: Boolean) {
+        val unit = if (isChecked) "m/s" else "mph"
+        sharedPreferences.setSpeedUnit(unit)
+    }
+
+    fun getSpeed(speed: Int): Int {
+        val unit = sharedPreferences.getSpeedUnit()
+        if(unit == "m/s") {
+            return speed
+        }
+        else {
+            return speed * 2
+        }
+    }
 }

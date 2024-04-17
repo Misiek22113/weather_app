@@ -28,7 +28,8 @@ class LocationAdapter(
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
         val location = locations[position]
         holder.cityTextView.text = location.name
-        holder.temperatureTextView.text = location.temperature.toInt().toString()
+        holder.temperatureTextView.text =
+            viewModel.getTemperature(location.temperature).toString()
     }
 
     override fun getItemCount(): Int {
