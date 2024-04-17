@@ -48,7 +48,6 @@ class SearchLocationAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateLocations(newLocations: List<Location>) {
-        Log.i("LocationAdapter", newLocations.toString())
         this.locations = newLocations
         notifyDataSetChanged()
     }
@@ -57,8 +56,6 @@ class SearchLocationAdapter(
         val location = locations[position]
         holder.cityTextView.text = location.name
         holder.countryTextView.text = location.country
-
-        Log.i("LocationAdapter is in List", viewModel.isLocationSaved(location).toString())
 
         if(viewModel.isLocationSaved(location)) {
             holder.checkmark.visibility = View.VISIBLE

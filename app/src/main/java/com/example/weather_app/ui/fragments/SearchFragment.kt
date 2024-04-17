@@ -51,7 +51,6 @@ class SearchFragment : Fragment(), LocationCardClickListener {
     }
 
     override fun onLocationCardClick(location: Location) {
-        Log.i("Location", location.toString())
         fetchCurrentWeather(location.lat, location.lon, "4bf2d9ba39b3f65d6d56ced5607fee4b")
         onNavigate()
     }

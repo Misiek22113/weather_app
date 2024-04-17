@@ -29,7 +29,8 @@ class LocationAdapter(
         val location = locations[position]
         holder.cityTextView.text = location.name
         holder.temperatureTextView.text =
-            viewModel.getTemperature(location.temperature).toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+            viewModel.getTemperature(location.temperature).toString()
+                .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
     }
 
     override fun getItemCount(): Int {
