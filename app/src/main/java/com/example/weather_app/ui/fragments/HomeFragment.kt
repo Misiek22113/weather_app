@@ -32,12 +32,12 @@ class HomeFragment : Fragment() {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
 //                    textView.text = weatherResponse?.list?.get(0).toString()
-                    Log.i("Location", locationResponse.toString())
+                    Log.i("Logcat", locationResponse.toString())
                 }
             } else {
                 response.errorBody()?.let {
                     val errorBodyString = it.string()
-                    Log.i("Location", errorBodyString)
+                    Log.i("Logcat", errorBodyString)
                 }
             }
         }

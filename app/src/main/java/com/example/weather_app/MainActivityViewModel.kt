@@ -40,7 +40,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             } else {
                 response.errorBody()?.let {
                     val errorBodyString = it.string()
-                    Log.i("Location", errorBodyString)
+                    Log.i("Logcat", errorBodyString)
                 }
             }
         }
@@ -57,7 +57,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             } else {
                 response.errorBody()?.let {
                     val errorBodyString = it.string()
-                    Log.i("Location", errorBodyString)
+                    Log.i("Logcat", errorBodyString)
                 }
             }
         }
@@ -78,6 +78,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         locations.add(savedLocation)
         this.locations.value = locations
         sharedPreferences.saveLocations(locations)
+        Log.i("Logcat", ("Wybrane Miasto: $savedLocation").toString())
     }
 
     fun deleteLocation(location: SavedLocation) {
@@ -89,8 +90,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun isLocationSaved(location: Location): Boolean {
         return locations.value?.any {
-            it.name == location.name &&
-                    it.lat == location.lat && it.lon == location.lon
+            it.lat == location.lat && it.lon == location.lon
         }
             ?: false
     }

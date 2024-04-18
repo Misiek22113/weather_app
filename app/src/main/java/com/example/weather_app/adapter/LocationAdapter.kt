@@ -40,7 +40,7 @@ class LocationAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateLocations(newLocations: List<SavedLocation>) {
-        Log.i("LocationAdapter", newLocations.toString())
+        Log.i("Logcat", newLocations.toString())
         this.locations = newLocations
         notifyDataSetChanged()
     }

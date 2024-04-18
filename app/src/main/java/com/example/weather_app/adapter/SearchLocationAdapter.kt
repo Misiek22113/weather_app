@@ -49,6 +49,7 @@ class SearchLocationAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateLocations(newLocations: List<Location>) {
         this.locations = newLocations
+        Log.i("Logcat", ("wyszukane: $newLocations").toString())
         notifyDataSetChanged()
     }
 
