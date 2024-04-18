@@ -13,8 +13,8 @@ import com.example.weather_app.R
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.ui.fragments.SearchFragment
 
-interface LocationCardClickListener {
-    fun onLocationCardClick(location: Location)
+interface SearchLocationCardClickListener {
+    fun onSearchLocationCardClick(location: Location)
 }
 
 class SearchLocationAdapter(
@@ -34,7 +34,7 @@ class SearchLocationAdapter(
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val location = locations[position]
-                    listener.onLocationCardClick(location)
+                    listener.onSearchLocationCardClick(location)
                 }
             }
         }

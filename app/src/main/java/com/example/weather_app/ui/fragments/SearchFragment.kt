@@ -1,7 +1,6 @@
 package com.example.weather_app.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivity
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.SearchLocationAdapter
-import com.example.weather_app.adapter.LocationCardClickListener
+import com.example.weather_app.adapter.SearchLocationCardClickListener
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.databinding.FragmentSearchBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class SearchFragment : Fragment(), LocationCardClickListener {
+class SearchFragment : Fragment(), SearchLocationCardClickListener {
 
     private var _binding: FragmentSearchBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
@@ -32,7 +27,7 @@ class SearchFragment : Fragment(), LocationCardClickListener {
         (activity as MainActivity).navigateToLocation()
     }
 
-    override fun onLocationCardClick(location: Location) {
+    override fun onSearchLocationCardClick(location: Location) {
         viewModel.fetchLocationData(location.lat, location.lon, "4bf2d9ba39b3f65d6d56ced5607fee4b")
         onNavigate()
     }

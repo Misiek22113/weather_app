@@ -21,27 +21,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-    private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = viewModel.retrofit.getLocationData(lat, lon, apiKey)
-            if (response.isSuccessful) {
-                val locationResponse = response.body()
-                withContext(Dispatchers.Main) {
-//                    textView.text = weatherResponse?.list?.get(0).toString()
-                    Log.i("Logcat", locationResponse.toString())
-                }
-            } else {
-                response.errorBody()?.let {
-                    val errorBodyString = it.string()
-                    Log.i("Logcat", errorBodyString)
-                }
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,16 +32,25 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+//        val textView: TextView = binding.textHome
+//        viewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
 
-        val lat = 52.2319581
-        val lon = 21.0067249
+//        val lat = 52.2319581
+//        val lon = 21.0067249
         val apiKey = "4bf2d9ba39b3f65d6d56ced5607fee4b"
 
-        fetchCurrentWeather(lat, lon, apiKey)
+//        viewModel.fetchCurrentWeather(lat, lon, apiKey)
+
+        viewModel.currentLocation.observe(viewLifecycleOwner) {
+            viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+        }
+
+        viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
+            binding.locationNameText.text = viewModel.selectedLocationWeather.value?.name ?: "Loading..."
+        }
+
 
         return root
     }

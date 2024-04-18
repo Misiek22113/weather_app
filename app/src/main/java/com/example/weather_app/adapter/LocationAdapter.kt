@@ -12,11 +12,20 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
+import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.ui.fragments.LocationFragment
+import com.example.weather_app.ui.fragments.SearchFragment
+
+interface LocationCardClickListener {
+    fun onLocationCardClick(location: SavedLocation)
+}
+
 
 class LocationAdapter(
     private var locations: List<SavedLocation>,
-    private val viewModel: MainActivityViewModel
+    private val viewModel: MainActivityViewModel,
+    private val listener: LocationFragment
 ) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -55,6 +64,14 @@ class LocationAdapter(
             deleteButton.setOnClickListener {
                 val location = locations[adapterPosition]
                 viewModel.deleteLocation(location)
+            }
+
+            view.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val location = locations[position]
+                    listener.onLocationCardClick(location)
+                }
             }
         }
     }

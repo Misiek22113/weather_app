@@ -20,9 +20,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
+    val currentLocation = MutableLiveData<SavedLocation>()
     private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
     private val sharedPreferences = SharedPreferences(application)
+    private val selectedLocationData = MutableLiveData<NewWeatherResponse?>()
+    val selectedLocationWeather: MutableLiveData<NewWeatherResponse?> get() = selectedLocationData
 
     fun fetchLocation(
         query: String,
@@ -63,6 +66,25 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofit.getLocationData(lat, lon, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+//                    textView.text = weatherResponse?.list?.get(0).toString()
+                    selectedLocationData.value = locationResponse
+                    Log.i("Logcat", locationResponse.toString())
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Logcat", errorBodyString)
+                }
+            }
+        }
+    }
+
     fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
         val savedLocation = SavedLocation(
             location.name,
@@ -86,6 +108,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         locations.remove(location)
         this.locations.value = locations
         sharedPreferences.saveLocations(locations)
+    }
+
+    fun setCurrentLocation(location: SavedLocation) {
+        this.currentLocation.value = location
+        sharedPreferences.setWeatherLocation(location)
     }
 
     fun isLocationSaved(location: Location): Boolean {
