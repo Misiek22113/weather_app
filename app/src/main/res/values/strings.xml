@@ -29,4 +29,6 @@
     <string name="kelvin">Kelvin</string>
     <string name="meters_per_second">m/s</string>
     <string name="miles_per_hour">mph</string>
+    <string name="location_name">Warszawa</string>
+    <string name="weather_description">Clear sky</string>
 </resources>
