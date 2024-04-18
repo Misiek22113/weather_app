@@ -31,6 +31,7 @@ class LocationAdapter(
         holder.temperatureTextView.text =
             viewModel.getTemperature(location.temperature).toString()
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+        holder.weatherImageView.setImageResource(viewModel.getWeatherIcon(location.weather))
     }
 
     override fun getItemCount(): Int {

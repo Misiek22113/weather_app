@@ -87,4 +87,19 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             return speed * 2
         }
     }
+
+    fun getWeatherIcon(description: String): Int{
+        return when (description) {
+            "clear sky" -> R.drawable.sun
+            "few clouds" -> R.drawable.few_clouds
+            "scattered clouds" -> R.drawable.broken_clouds
+            "broken clouds" -> R.drawable.broken_clouds
+            "shower rain" -> R.drawable.rain
+            "rain" -> R.drawable.rain
+            "thunderstorm" -> R.drawable.storm
+            "snow" -> R.drawable.snow
+            "mist" -> R.drawable.mist
+            else -> R.drawable.sun
+        }
+    }
 }
