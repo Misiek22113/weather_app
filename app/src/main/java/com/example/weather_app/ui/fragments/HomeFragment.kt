@@ -42,6 +42,7 @@ class HomeFragment : Fragment() {
         val apiKey = "4bf2d9ba39b3f65d6d56ced5607fee4b"
 
 //        viewModel.fetchCurrentWeather(lat, lon, apiKey)
+        viewModel.getCurrentLocation()
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)

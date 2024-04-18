@@ -20,7 +20,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
-    val currentLocation = MutableLiveData<SavedLocation>()
+    var currentLocation = MutableLiveData<SavedLocation>()
     private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
     private val sharedPreferences = SharedPreferences(application)
@@ -113,6 +113,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun setCurrentLocation(location: SavedLocation) {
         this.currentLocation.value = location
         sharedPreferences.setWeatherLocation(location)
+    }
+
+    fun getCurrentLocation(){
+        this.currentLocation.value = sharedPreferences.getWeatherLocation()
     }
 
     fun isLocationSaved(location: Location): Boolean {
