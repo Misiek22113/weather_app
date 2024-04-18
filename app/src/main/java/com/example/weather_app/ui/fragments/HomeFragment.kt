@@ -7,14 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.weather_app.databinding.FragmentHomeBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.example.weather_app.MainActivityViewModel
-import com.example.weather_app.data.api.RetrofitWeatherClient
-import com.example.weather_app.data_classes.WeatherResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +27,7 @@ class HomeFragment : Fragment() {
 
     private fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
         CoroutineScope(Dispatchers.IO).launch {
-            val response = viewModel.retrofit.getCurrentWeather(lat, lon, apiKey)
+            val response = viewModel.retrofit.getLocationData(lat, lon, apiKey)
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {

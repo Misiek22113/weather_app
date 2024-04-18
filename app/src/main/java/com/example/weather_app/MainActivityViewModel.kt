@@ -2,13 +2,19 @@ package com.example.weather_app
 
 import SharedPreferences
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.NewWeatherResponse
 import com.example.weather_app.data_classes.SavedLocation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,7 +24,46 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
     private val sharedPreferences = SharedPreferences(application)
 
-    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double){
+    fun fetchLocation(
+        query: String,
+        limit: Int,
+        apiKey: String,
+        searchLocationsAdapter: SearchLocationAdapter
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofit.getLocations(query, limit, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+                    searchLocationsAdapter.updateLocations(locationResponse!!)
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Location", errorBodyString)
+                }
+            }
+        }
+    }
+
+    fun fetchLocationData(lat: Double, lon: Double, apiKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofit.getLocationData(lat, lon, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+                    addLocation(locationResponse!!, lat, lon)
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Location", errorBodyString)
+                }
+            }
+        }
+    }
+
+    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
@@ -65,10 +110,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun getTemperature(temp: Double): Int {
         val unit = sharedPreferences.getTemperatureUnit()
-        if(unit == "celsius") {
+        if (unit == "celsius") {
             return (temp - 273.15).toInt()
-        }
-        else {
+        } else {
             return temp.toInt()
         }
     }
@@ -80,15 +124,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun getSpeed(speed: Int): Int {
         val unit = sharedPreferences.getSpeedUnit()
-        if(unit == "m/s") {
+        if (unit == "m/s") {
             return speed
-        }
-        else {
+        } else {
             return speed * 2
         }
     }
 
-    fun getWeatherIcon(description: String): Int{
+    fun getWeatherIcon(description: String): Int {
         return when (description) {
             "clear sky" -> R.drawable.sun
             "few clouds" -> R.drawable.few_clouds
