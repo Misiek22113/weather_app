@@ -26,7 +26,6 @@ class LocationFragment : Fragment(), LocationCardClickListener {
         viewModel.setCurrentLocation(location)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

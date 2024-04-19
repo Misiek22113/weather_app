@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.weather_app.databinding.FragmentHomeBinding
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.weather_app.MainActivityViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +41,13 @@ class HomeFragment : Fragment() {
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+        }
+
+        binding.refreshButton.setOnClickListener {
+            viewModel.currentLocation.value?.let {
+                viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+            }
+            Toast.makeText(context, "Weather has been updated", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
