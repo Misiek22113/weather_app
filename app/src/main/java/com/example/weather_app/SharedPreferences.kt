@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.example.weather_app.data_classes.SavedLocation
 import com.google.gson.reflect.TypeToken
@@ -16,10 +17,10 @@ class SharedPreferences(context: Context) {
         sharedPref.edit().putString(locationsKey, locationJson).apply()
     }
 
-    fun updateLocations(location: SavedLocation) {
-        val locationJson = gson.toJson(location)
-        sharedPref.edit().putString(locationsKey, locationJson).apply()
-    }
+//    fun updateLocations(location: SavedLocation) {
+//        val locationJson = gson.toJson(location)
+//        sharedPref.edit().putString(locationsKey, locationJson).apply()
+//    }
 
     fun getLocations(): List<SavedLocation>? {
         val locationJson = sharedPref.getString(locationsKey, null)
@@ -54,10 +55,12 @@ class SharedPreferences(context: Context) {
     }
 
     fun setSpeedUnit(unit: String) {
+        Log.i("Logcat", ("setSpeedUni: $unit").toString())
         sharedPref.edit().putString(speedUnitKey, unit).apply()
     }
 
     fun getSpeedUnit(): String {
-        return sharedPref.getString(speedUnitKey, "metric")!!
+        Log.i("Logcat", ("getSpeedUnit: ${sharedPref.getString(speedUnitKey, "m/s")}").toString())
+        return sharedPref.getString(speedUnitKey, "m/s")!!
     }
 }

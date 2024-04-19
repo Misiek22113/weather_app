@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -151,20 +152,26 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun setSpeedUnit(isChecked: Boolean) {
-        val unit = if (isChecked) "m/s" else "mph"
+        Log.i("Logcat", ("setSpeedUnit ViewModel: $isChecked").toString())
+        val unit = if (isChecked) "mph" else "m/s"
         sharedPreferences.setSpeedUnit(unit)
+    }
+
+    fun setSpecialUnit() {
+        sharedPreferences.setSpeedUnit("m/s")
     }
 
     fun getSpeedUnit(): String {
         return sharedPreferences.getSpeedUnit()
     }
 
-    fun getSpeed(speed: Double): Double {
+    fun getSpeed(speed: Double): String {
         val unit = sharedPreferences.getSpeedUnit()
+        val df = DecimalFormat("#.##")
         if (unit == "m/s") {
-            return speed.toDouble()
+            return df.format(speed).toString()
         } else {
-            return speed * 2.23
+            return df.format(speed * 2.23).toString()
         }
     }
 

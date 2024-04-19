@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
             binding.clouds.dataValue.text = it?.clouds?.all.toString().plus("%")
             binding.wind.dataDescription.text = "wind"
             binding.wind.dataValue.text =
-                viewModel.getSpeed(it?.wind?.speed ?: 0.0).toString().plus(viewModel.getSpeedUnit())
+                viewModel.getSpeed(it?.wind?.speed ?: 0.0).plus(" " + viewModel.getSpeedUnit())
             binding.humidity.dataDescription.text = "humidity"
             binding.humidity.dataValue.text = it?.main?.humidity.toString().plus("%")
             binding.pressure.dataDescription.text = "pressure"

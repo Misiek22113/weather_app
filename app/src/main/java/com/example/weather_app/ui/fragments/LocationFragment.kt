@@ -3,7 +3,6 @@ package com.example.weather_app.ui.fragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
-import com.example.weather_app.R
 import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
-import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.SavedLocation
 import com.example.weather_app.databinding.FragmentLocationBinding
 import com.example.weather_app.databinding.FragmentSettingsBinding
@@ -62,19 +59,23 @@ class LocationFragment : Fragment(), LocationCardClickListener {
         val alertDialog = AlertDialog.Builder(this.requireContext());
         alertDialog.setView(settingsBinding.root)
 
-        val sharedPreferences = viewModel.getTemperatureUnit()
+        val temperatureUnit = viewModel.getTemperatureUnit()
+        val speedUnit = viewModel.getSpeedUnit()
 
-        settingsBinding.temperatureSwitch.isChecked = sharedPreferences == "celsius"
+        settingsBinding.speedSwitch.isChecked = speedUnit == "mph"
+
+        settingsBinding.speedSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.setSpeedUnit(isChecked)
+            binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
+        }
+
+        settingsBinding.temperatureSwitch.isChecked = temperatureUnit == "celsius"
 
         settingsBinding.temperatureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setTemperatureUnit(isChecked)
             binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
         }
 
-        settingsBinding.speedSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            viewModel.setSpeedUnit(isChecked)
-            binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
-        }
 
         alertDialog.show()
     }
