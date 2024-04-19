@@ -2,6 +2,10 @@ package com.example.weather_app
 
 import SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -13,8 +17,26 @@ import com.example.weather_app.ui.fragments.LocationFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPref: SharedPreferences
     private lateinit var viewModel: MainActivityViewModel
+
+    private var handler = Handler(Looper.getMainLooper())
+    private val updateLocationsRunnable = object : Runnable {
+        override fun run() {
+            viewModel.updateSavedLocations()
+            handler.postDelayed(this, 30000)
+            Log.i("Logcat", "Locations updated")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handler.post(updateLocationsRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(updateLocationsRunnable)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

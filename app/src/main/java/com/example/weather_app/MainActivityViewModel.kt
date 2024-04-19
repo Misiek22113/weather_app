@@ -68,13 +68,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
+    fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = retrofit.getLocationWeather(lat, lon, apiKey)
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
-//                    textView.text = weatherResponse?.list?.get(0).toString()
                     selectedLocationData.value = locationResponse
                     Log.i("Logcat", locationResponse.toString())
                 }
@@ -106,6 +105,53 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         Log.i("Logcat", ("Wybrane Miasto: $savedLocation").toString())
     }
 
+    private suspend fun fetchUpdateLocationData(
+        lat: Double,
+        lon: Double,
+        apiKey: String
+    ): NewWeatherResponse? {
+        val response = retrofit.getLocationWeather(lat, lon, apiKey)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            response.errorBody()?.let {
+                val errorBodyString = it.string()
+                Log.i("Logcat", errorBodyString)
+            }
+            null
+        }
+    }
+
+    fun updateSavedLocations() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val locations = locations.value?.toMutableList() ?: mutableListOf()
+            locations.forEachIndexed { index, savedLocation ->
+                val updatedLocation = fetchUpdateLocationData(
+                    savedLocation.lat,
+                    savedLocation.lon,
+                    "4bf2d9ba39b3f65d6d56ced5607fee4b"
+                )
+                updatedLocation?.let {
+                    val newSavedLocation = SavedLocation(
+                        it.name,
+                        it.coord.lat,
+                        it.coord.lon,
+                        false,
+                        it.main.temp,
+                        it.weather[0].main,
+                        it.weather[0].description
+                    )
+                    locations[index] = newSavedLocation
+                }
+            }
+            withContext(Dispatchers.Main) {
+                this@MainActivityViewModel.locations.value = locations
+                sharedPreferences.saveLocations(locations)
+            }
+        }
+    }
+
+
     fun deleteLocation(location: SavedLocation) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
@@ -118,7 +164,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         sharedPreferences.setWeatherLocation(location)
     }
 
-    fun getCurrentLocation(){
+    fun getCurrentLocation() {
         this.currentLocation.value = sharedPreferences.getWeatherLocation()
     }
 
@@ -183,7 +229,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getWeatherIcon(weather: String, weatherDescription: String): Int {
-        if(weather == "Clouds"){
+        if (weather == "Clouds") {
             return when (weatherDescription) {
                 "few clouds" -> R.drawable.few_clouds
                 "scattered clouds" -> R.drawable.few_clouds
