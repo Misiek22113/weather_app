@@ -21,8 +21,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
     var currentLocation = MutableLiveData<SavedLocation>()
-    private val locations = MutableLiveData<List<SavedLocation>>()
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
+    private val locations = MutableLiveData<List<SavedLocation>>()
     private val sharedPreferences = SharedPreferences(application)
     private val selectedLocationData = MutableLiveData<NewWeatherResponse?>()
     val selectedLocationWeather: MutableLiveData<NewWeatherResponse?> get() = selectedLocationData
@@ -51,7 +51,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun fetchLocationData(lat: Double, lon: Double, apiKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = retrofit.getLocationData(lat, lon, apiKey)
+            val response = retrofit.getLocationWeather(lat, lon, apiKey)
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
@@ -68,7 +68,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String){
         CoroutineScope(Dispatchers.IO).launch {
-            val response = retrofit.getLocationData(lat, lon, apiKey)
+            val response = retrofit.getLocationWeather(lat, lon, apiKey)
             if (response.isSuccessful) {
                 val locationResponse = response.body()
                 withContext(Dispatchers.Main) {
@@ -85,7 +85,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
+    private fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,

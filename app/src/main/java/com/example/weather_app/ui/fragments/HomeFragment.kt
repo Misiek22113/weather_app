@@ -1,5 +1,6 @@
 package com.example.weather_app.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,16 +34,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textHome
-//        viewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-
-//        val lat = 52.2319581
-//        val lon = 21.0067249
         val apiKey = "4bf2d9ba39b3f65d6d56ced5607fee4b"
 
-//        viewModel.fetchCurrentWeather(lat, lon, apiKey)
         viewModel.getCurrentLocation()
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
@@ -49,9 +43,12 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
+            val temp = viewModel.getTemperature(it?.main?.temp ?: 0.0)
             binding.locationNameText.text = viewModel.selectedLocationWeather.value?.name ?: "Loading..."
+            binding.temperature.text = temp.toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+            binding.weatherDescription.text = viewModel.selectedLocationWeather.value?.weather?.get(0)?.description
+            binding.weatherIcon.setImageResource(viewModel.getWeatherIcon(it?.weather?.get(0)?.description ?: "Loading..."))
         }
-
 
         return root
     }

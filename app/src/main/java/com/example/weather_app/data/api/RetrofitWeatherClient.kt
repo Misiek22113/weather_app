@@ -26,7 +26,7 @@ interface ApiWeatherService {
     ): Response<List<Location>>
 
     @GET("data/2.5/weather")
-    suspend fun getLocationData(
+    suspend fun getLocationWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String
