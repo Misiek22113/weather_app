@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
 
         viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
             val temp = viewModel.getTemperature(it?.main?.temp ?: 0.0)
+            val feelsLikeTemp = viewModel.getTemperature(it?.main?.feelsLike ?: 0.0)
             binding.locationNameText.text =
                 viewModel.selectedLocationWeather.value?.name ?: "Loading..."
             binding.temperature.text =
@@ -57,15 +58,23 @@ class HomeFragment : Fragment() {
                 )
             )
             binding.clouds.dataDescription.text = "clouds"
-            binding.clouds.dataValue.text = it?.clouds?.all.toString()
+            binding.clouds.dataValue.text = it?.clouds?.all.toString().plus("%")
             binding.wind.dataDescription.text = "wind"
-            binding.wind.dataValue.text = it?.wind?.speed.toString()
+            binding.wind.dataValue.text =
+                viewModel.getSpeed(it?.wind?.speed ?: 0.0).toString().plus(viewModel.getSpeedUnit())
             binding.humidity.dataDescription.text = "humidity"
-            binding.humidity.dataValue.text = it?.main?.humidity.toString()
+            binding.humidity.dataValue.text = it?.main?.humidity.toString().plus("%")
             binding.pressure.dataDescription.text = "pressure"
-            binding.pressure.dataValue.text = it?.main?.pressure.toString()
+            binding.pressure.dataValue.text = it?.main?.pressure.toString().plus(" hPa")
             binding.sunrise.dataDescription.text = "sunrise"
             binding.sunrise.dataValue.text = viewModel.getSunriseSunset(it?.sys?.sunrise ?: 0)
+            binding.sunset.dataDescription.text = "sunset"
+            binding.sunset.dataValue.text = viewModel.getSunriseSunset(it?.sys?.sunset ?: 0)
+            binding.feelsLike.dataDescription.text = "feels like"
+            binding.feelsLike.dataValue.text = feelsLikeTemp.toString()
+                .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+            binding.visibility.dataDescription.text = "visibility"
+            binding.visibility.dataValue.text = it?.visibility.toString().plus(" m")
         }
 
         return root

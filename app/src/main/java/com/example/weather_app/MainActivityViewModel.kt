@@ -1,6 +1,7 @@
 package com.example.weather_app
 
 import SharedPreferences
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -154,13 +155,24 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         sharedPreferences.setSpeedUnit(unit)
     }
 
-    fun getSpeed(speed: Int): Int {
+    fun getSpeedUnit(): String {
+        return sharedPreferences.getSpeedUnit()
+    }
+
+    fun getSpeed(speed: Double): Double {
         val unit = sharedPreferences.getSpeedUnit()
         if (unit == "m/s") {
-            return speed
+            return speed.toDouble()
         } else {
-            return speed * 2
+            return speed * 2.23
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getSunriseSunset(time: Long): String {
+        val date = java.util.Date(time * 1000)
+        val formatter = java.text.SimpleDateFormat("HH:mm")
+        return formatter.format(date)
     }
 
     fun getWeatherIcon(weather: String, weatherDescription: String): Int {

@@ -75,11 +75,11 @@
             android:orientation="horizontal">
 
             <include
-                android:id="@+id/pressure"
+                android:id="@+id/feels_like"
                 layout="@layout/weather_info_card" />
 
             <include
-                android:id="@+id/humidity"
+                android:id="@+id/pressure"
                 layout="@layout/weather_info_card" />
 
         </LinearLayout>
@@ -126,7 +126,7 @@
             android:orientation="horizontal">
 
             <include
-                android:id="@+id/uv_index"
+                android:id="@+id/humidity"
                 layout="@layout/weather_info_card" />
 
             <include
