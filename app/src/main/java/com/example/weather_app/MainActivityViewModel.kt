@@ -92,6 +92,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             location.coord.lon,
             false,
             location.main.temp,
+            location.weather[0].main,
             location.weather[0].description
         )
         savedLocation.lat = lat
@@ -162,17 +163,24 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun getWeatherIcon(description: String): Int {
-        return when (description) {
-            "clear sky" -> R.drawable.sun
-            "few clouds" -> R.drawable.few_clouds
-            "scattered clouds" -> R.drawable.broken_clouds
-            "broken clouds" -> R.drawable.broken_clouds
-            "shower rain" -> R.drawable.rain
-            "rain" -> R.drawable.rain
-            "thunderstorm" -> R.drawable.storm
-            "snow" -> R.drawable.snow
-            "mist" -> R.drawable.mist
+    fun getWeatherIcon(weather: String, weatherDescription: String): Int {
+        if(weather == "Clouds"){
+            return when (weatherDescription) {
+                "few clouds" -> R.drawable.few_clouds
+                "scattered clouds" -> R.drawable.few_clouds
+                "broken clouds" -> R.drawable.broken_clouds
+                "overcast clouds" -> R.drawable.broken_clouds
+                else -> R.drawable.broken_clouds
+            }
+        }
+
+        return when (weather) {
+            "Clear" -> R.drawable.sun
+            "Rain" -> R.drawable.rain
+            "Thunderstorm" -> R.drawable.storm
+            "Snow" -> R.drawable.snow
+            "Mist" -> R.drawable.mist
+            "Drizzle" -> R.drawable.drizzle
             else -> R.drawable.sun
         }
     }

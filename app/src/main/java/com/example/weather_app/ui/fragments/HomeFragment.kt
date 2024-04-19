@@ -44,10 +44,28 @@ class HomeFragment : Fragment() {
 
         viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
             val temp = viewModel.getTemperature(it?.main?.temp ?: 0.0)
-            binding.locationNameText.text = viewModel.selectedLocationWeather.value?.name ?: "Loading..."
-            binding.temperature.text = temp.toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.weatherDescription.text = viewModel.selectedLocationWeather.value?.weather?.get(0)?.description
-            binding.weatherIcon.setImageResource(viewModel.getWeatherIcon(it?.weather?.get(0)?.description ?: "Loading..."))
+            binding.locationNameText.text =
+                viewModel.selectedLocationWeather.value?.name ?: "Loading..."
+            binding.temperature.text =
+                temp.toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+            binding.weatherDescription.text =
+                viewModel.selectedLocationWeather.value?.weather?.get(0)?.description
+            binding.weatherIcon.setImageResource(
+                viewModel.getWeatherIcon(
+                    it?.weather?.get(0)?.main ?: "Clear",
+                    it?.weather?.get(0)?.description ?: "Clear"
+                )
+            )
+            binding.clouds.dataDescription.text = "clouds"
+            binding.clouds.dataValue.text = it?.clouds?.all.toString()
+            binding.wind.dataDescription.text = "wind"
+            binding.wind.dataValue.text = it?.wind?.speed.toString()
+            binding.humidity.dataDescription.text = "humidity"
+            binding.humidity.dataValue.text = it?.main?.humidity.toString()
+            binding.pressure.dataDescription.text = "pressure"
+            binding.pressure.dataValue.text = it?.main?.pressure.toString()
+            binding.sunrise.dataDescription.text = "sunrise"
+            binding.sunrise.dataValue.text = viewModel.getSunriseSunset(it?.sys?.sunrise ?: 0)
         }
 
         return root
