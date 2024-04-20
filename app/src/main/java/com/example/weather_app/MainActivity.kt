@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.updateSavedLocations()
             viewModel.updateSelectedLocationWeather()
             handler.postDelayed(this, 30000)
-            Log.i("Logcat", "Locations updated")
+            Toast.makeText(applicationContext, "Data updated", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.setLocations()
     }
 
-    private fun setUpSettingsDialog(){
+    private fun setUpSettingsDialog() {
 
     };
 

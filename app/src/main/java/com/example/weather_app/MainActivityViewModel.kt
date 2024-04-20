@@ -221,10 +221,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         sharedPreferences.setSpeedUnit(unit)
     }
 
-    fun setSpecialUnit() {
-        sharedPreferences.setSpeedUnit("m/s")
-    }
-
     fun getSpeedUnit(): String {
         return sharedPreferences.getSpeedUnit()
     }
