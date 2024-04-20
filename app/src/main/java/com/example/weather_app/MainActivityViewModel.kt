@@ -151,6 +151,24 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun updateSelectedLocationWeather() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val currentLocation = currentLocation.value
+            currentLocation?.let {
+                val updatedLocation = fetchUpdateLocationData(
+                    it.lat,
+                    it.lon,
+                    "4bf2d9ba39b3f65d6d56ced5607fee4b"
+                )
+                updatedLocation?.let {
+                    withContext(Dispatchers.Main) {
+                        selectedLocationData.value = updatedLocation
+                    }
+                }
+            }
+        }
+    }
+
 
     fun deleteLocation(location: SavedLocation) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()

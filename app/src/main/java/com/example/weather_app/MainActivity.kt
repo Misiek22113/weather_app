@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val updateLocationsRunnable = object : Runnable {
         override fun run() {
             viewModel.updateSavedLocations()
+            viewModel.updateSelectedLocationWeather()
             handler.postDelayed(this, 30000)
             Log.i("Logcat", "Locations updated")
         }
