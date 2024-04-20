@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         override fun run() {
             viewModel.updateSavedLocations()
             viewModel.updateSelectedLocationWeather()
-            handler.postDelayed(this, 30000)
+            handler.postDelayed(this, 300000)
             Toast.makeText(applicationContext, "Data updated", Toast.LENGTH_SHORT).show()
         }
     }

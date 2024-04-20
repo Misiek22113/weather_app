@@ -1,152 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_400"
-    tools:context=".ui.fragments.HomeFragment">
+    android:layout_weight="1"
+    android:scrollbars="vertical">
 
-    <TextView
-        android:id="@+id/locationNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location_name"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_400"
+        tools:context=".ui.fragments.HomeFragment">
 
-    <TextView
-        android:id="@+id/temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/example_temp"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationNameText" />
+        <TextView
+            android:id="@+id/locationNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_name"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
 
-    <TextView
-        android:id="@+id/weatherDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/weather_description"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/temperature" />
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/example_temp"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationNameText" />
 
-    <ImageView
-        android:id="@+id/weatherIcon"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:src="@drawable/few_clouds"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
-        app:layout_constraintVertical_bias="0.019" />
+        <TextView
+            android:id="@+id/weatherDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/weather_description"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:paddingTop="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherIcon">
+        <ImageView
+            android:id="@+id/weatherIcon"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/few_clouds"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
+            app:layout_constraintVertical_bias="0.019" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherIcon">
 
-            <include
-                android:id="@+id/feels_like"
-                layout="@layout/weather_info_card" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <include
-                android:id="@+id/pressure"
-                layout="@layout/weather_info_card" />
+                <include
+                    android:id="@+id/feels_like"
+                    layout="@layout/weather_info_card" />
+
+                <include
+                    android:id="@+id/pressure"
+                    layout="@layout/weather_info_card" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/wind"
+                    layout="@layout/weather_info_card" />
+
+                <include
+                    android:id="@+id/visibility"
+                    layout="@layout/weather_info_card" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/clouds"
+                    layout="@layout/weather_info_card" />
+
+                <include
+                    android:id="@+id/sunrise"
+                    layout="@layout/weather_info_card" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/humidity"
+                    layout="@layout/weather_info_card" />
+
+                <include
+                    android:id="@+id/sunset"
+                    layout="@layout/weather_info_card" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/forecastScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/refreshButton">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- Pierwszy forecast_card -->
+                    <include
+                        android:id="@+id/forecastCard1"
+                        layout="@layout/forecast_card" />
+
+                    <!-- Kolejne forecast_card -->
+                    <include
+                        android:id="@+id/forecastCard2"
+                        layout="@layout/forecast_card"
+                        app:layout_constraintStart_toEndOf="@id/forecastCard1" />
+
+                    <include
+                        android:id="@+id/forecastCard3"
+                        layout="@layout/forecast_card"
+                        app:layout_constraintStart_toEndOf="@id/forecastCard2" />
+
+                    <include
+                        android:id="@+id/forecastCard4"
+                        layout="@layout/forecast_card"
+                        app:layout_constraintStart_toEndOf="@id/forecastCard3" />
+
+                    <include
+                        android:id="@+id/forecastCard5"
+                        layout="@layout/forecast_card"
+                        app:layout_constraintStart_toEndOf="@id/forecastCard4" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/wind"
-                layout="@layout/weather_info_card" />
-
-            <include
-                android:id="@+id/visibility"
-                layout="@layout/weather_info_card" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/clouds"
-                layout="@layout/weather_info_card" />
-
-            <include
-                android:id="@+id/sunrise"
-                layout="@layout/weather_info_card" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/humidity"
-                layout="@layout/weather_info_card" />
-
-            <include
-                android:id="@+id/sunset"
-                layout="@layout/weather_info_card" />
-
-        </LinearLayout>
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.818"
+            app:layout_constraintStart_toEndOf="@+id/locationNameText"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/refreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="#00FFFFFF"
-        android:src="@drawable/refresh"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.818"
-        app:layout_constraintStart_toEndOf="@+id/locationNameText"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

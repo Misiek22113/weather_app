@@ -31,4 +31,6 @@
     <string name="miles_per_hour">mph</string>
     <string name="location_name">Warszawa</string>
     <string name="weather_description">Clear sky</string>
+    <string name="temperature">25°C</string>
+    <string name="day_of_the_week">Monday</string>
 </resources>
