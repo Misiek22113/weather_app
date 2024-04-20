@@ -17,8 +17,7 @@ data class SavedLocation(
     val weatherDescription: String,
 )
 
-
-data class WeatherResponse(
+data class WeatherForecastResponse(
     val cod: String,
     val message: Int,
     val cnt: Int,

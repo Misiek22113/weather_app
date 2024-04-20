@@ -144,7 +144,7 @@
 
             <HorizontalScrollView
                 android:id="@+id/forecastScrollView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/refreshButton">
 
@@ -152,12 +152,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <!-- Pierwszy forecast_card -->
                     <include
                         android:id="@+id/forecastCard1"
                         layout="@layout/forecast_card" />
 
-                    <!-- Kolejne forecast_card -->
                     <include
                         android:id="@+id/forecastCard2"
                         layout="@layout/forecast_card"

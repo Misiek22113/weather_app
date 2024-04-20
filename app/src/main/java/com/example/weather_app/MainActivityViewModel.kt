@@ -10,13 +10,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.Location
-import com.example.weather_app.data_classes.NewWeatherResponse
+import com.example.weather_app.data_classes.WeatherResponse
 import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.data_classes.WeatherForecastResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
+
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,8 +28,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val savedLocations: LiveData<List<SavedLocation>> get() = locations
     private val locations = MutableLiveData<List<SavedLocation>>()
     private val sharedPreferences = SharedPreferences(application)
-    private val selectedLocationData = MutableLiveData<NewWeatherResponse?>()
-    val selectedLocationWeather: MutableLiveData<NewWeatherResponse?> get() = selectedLocationData
+    private val selectedLocationData = MutableLiveData<WeatherResponse?>()
+    private val selectedLocationForecastData = MutableLiveData<WeatherForecastResponse?>()
+    val selectedLocationWeather: MutableLiveData<WeatherResponse?> get() = selectedLocationData
+    val selectedLocationForecast: MutableLiveData<WeatherForecastResponse?> get() = selectedLocationForecastData
 
     fun fetchLocation(
         query: String,
@@ -86,7 +90,26 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    private fun addLocation(location: NewWeatherResponse, lat: Double, lon: Double) {
+    fun fetchForecastWeather(lat: Double, lon: Double, apiKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofit.getForecastWeather(lat, lon, apiKey)
+            if (response.isSuccessful) {
+                val locationResponse = response.body()
+                withContext(Dispatchers.Main) {
+                    selectedLocationForecastData.value = locationResponse
+                    sharedPreferences.setLocationForecast(locationResponse!!)
+                    Log.i("Logcat", locationResponse.toString())
+                }
+            } else {
+                response.errorBody()?.let {
+                    val errorBodyString = it.string()
+                    Log.i("Logcat", errorBodyString)
+                }
+            }
+        }
+    }
+
+    private fun addLocation(location: WeatherResponse, lat: Double, lon: Double) {
         val savedLocation = SavedLocation(
             location.name,
             location.coord.lat,
@@ -109,7 +132,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         lat: Double,
         lon: Double,
         apiKey: String
-    ): NewWeatherResponse? {
+    ): WeatherResponse? {
         val response = retrofit.getLocationWeather(lat, lon, apiKey)
         return if (response.isSuccessful) {
             response.body()
@@ -169,7 +192,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-
     fun deleteLocation(location: SavedLocation) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
@@ -184,6 +206,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun getCurrentLocation() {
         this.currentLocation.value = sharedPreferences.getWeatherLocation()
+    }
+
+    fun getCurrentLocationForecast() {
+        this.selectedLocationForecastData.value = sharedPreferences.getLocationForecast()
     }
 
     fun isLocationSaved(location: Location): Boolean {
@@ -263,4 +289,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             else -> R.drawable.sun
         }
     }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getHour(timestamp: Long): String {
+        val date = java.util.Date(timestamp * 1000)
+        val formatter = java.text.SimpleDateFormat("HH:mm")
+        return formatter.format(date)
+    }
+
 }

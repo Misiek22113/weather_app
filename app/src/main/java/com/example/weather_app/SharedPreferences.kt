@@ -1,7 +1,9 @@
 import android.content.Context
 import android.util.Log
+import com.example.weather_app.data_classes.Forecast
 import com.google.gson.Gson
 import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.data_classes.WeatherForecastResponse
 import com.google.gson.reflect.TypeToken
 
 class SharedPreferences(context: Context) {
@@ -11,16 +13,12 @@ class SharedPreferences(context: Context) {
     private val weatherLocationKey = "weather_location"
     private val temperatureUnitKey = "temperature_unit"
     private val speedUnitKey = "speed_unit"
+    private val forecastKey = "forecast"
 
     fun saveLocations(location: List<SavedLocation>) {
         val locationJson = gson.toJson(location)
         sharedPref.edit().putString(locationsKey, locationJson).apply()
     }
-
-//    fun updateLocations(location: SavedLocation) {
-//        val locationJson = gson.toJson(location)
-//        sharedPref.edit().putString(locationsKey, locationJson).apply()
-//    }
 
     fun getLocations(): List<SavedLocation>? {
         val locationJson = sharedPref.getString(locationsKey, null)
@@ -62,5 +60,19 @@ class SharedPreferences(context: Context) {
     fun getSpeedUnit(): String {
         Log.i("Logcat", ("getSpeedUnit: ${sharedPref.getString(speedUnitKey, "m/s")}").toString())
         return sharedPref.getString(speedUnitKey, "m/s")!!
+    }
+
+    fun setLocationForecast(forecast: WeatherForecastResponse) {
+        val locationForecastJson = gson.toJson(forecast)
+        sharedPref.edit().putString(forecastKey, locationForecastJson).apply()
+    }
+
+    fun getLocationForecast(): WeatherForecastResponse? {
+        val locationForecastJson = sharedPref.getString(forecastKey, null)
+        return if (locationForecastJson != null) {
+            gson.fromJson(locationForecastJson, WeatherForecastResponse::class.java)
+        } else {
+            null
+        }
     }
 }
