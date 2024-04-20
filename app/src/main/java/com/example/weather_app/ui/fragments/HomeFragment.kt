@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.weather_app.databinding.FragmentHomeBinding
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.weather_app.MainActivityViewModel
+import com.example.weather_app.R
 
 
 class HomeFragment : Fragment() {
@@ -81,57 +84,41 @@ class HomeFragment : Fragment() {
             binding.visibility.dataValue.text = it?.visibility.toString().plus(" m")
         }
 
-        viewModel.selectedLocationForecast.observe(viewLifecycleOwner) {
-            binding.forecastCard1.dayOfTheWeek.text = viewModel.getHour(it?.list?.get(0)?.dt ?: 0)
-            binding.forecastCard1.forecastWeatherIcon.setImageResource(
-                viewModel.getWeatherIcon(
-                    it?.list?.get(0)?.weather?.get(0)?.main ?: "Clear",
-                    it?.list?.get(0)?.weather?.get(0)?.description ?: "Clear"
-                )
-            )
-            binding.forecastCard1.forecastTemperature.text =
-                viewModel.getTemperature(it?.list?.get(0)?.main?.temp ?: 0.0).toString()
-                    .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.forecastCard2.dayOfTheWeek.text = viewModel.getHour(it?.list?.get(1)?.dt ?: 0)
-            binding.forecastCard2.forecastWeatherIcon.setImageResource(
-                viewModel.getWeatherIcon(
-                    it?.list?.get(1)?.weather?.get(0)?.main ?: "Clear",
-                    it?.list?.get(1)?.weather?.get(0)?.description ?: "Clear"
-                )
-            )
-            binding.forecastCard2.forecastTemperature.text =
-                viewModel.getTemperature(it?.list?.get(1)?.main?.temp ?: 0.0).toString()
-                    .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.forecastCard3.dayOfTheWeek.text = viewModel.getHour(it?.list?.get(2)?.dt ?: 0)
-            binding.forecastCard3.forecastWeatherIcon.setImageResource(
-                viewModel.getWeatherIcon(
-                    it?.list?.get(2)?.weather?.get(0)?.main ?: "Clear",
-                    it?.list?.get(2)?.weather?.get(0)?.description ?: "Clear"
-                )
-            )
-            binding.forecastCard3.forecastTemperature.text =
-                viewModel.getTemperature(it?.list?.get(2)?.main?.temp ?: 0.0).toString()
-                    .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.forecastCard4.dayOfTheWeek.text = viewModel.getHour(it?.list?.get(3)?.dt ?: 0)
-            binding.forecastCard4.forecastWeatherIcon.setImageResource(
-                viewModel.getWeatherIcon(
-                    it?.list?.get(3)?.weather?.get(0)?.main ?: "Clear",
-                    it?.list?.get(3)?.weather?.get(0)?.description ?: "Clear"
-                )
-            )
-            binding.forecastCard4.forecastTemperature.text =
-                viewModel.getTemperature(it?.list?.get(3)?.main?.temp ?: 0.0).toString()
-                    .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.forecastCard5.dayOfTheWeek.text = viewModel.getHour(it?.list?.get(4)?.dt ?: 0)
-            binding.forecastCard5.forecastWeatherIcon.setImageResource(
-                viewModel.getWeatherIcon(
-                    it?.list?.get(4)?.weather?.get(0)?.main ?: "Clear",
-                    it?.list?.get(4)?.weather?.get(0)?.description ?: "Clear"
-                )
-            )
-            binding.forecastCard5.forecastTemperature.text =
-                viewModel.getTemperature(it?.list?.get(4)?.main?.temp ?: 0.0).toString()
-                    .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+        viewModel.selectedLocationForecast.observe(viewLifecycleOwner) { forecastData ->
+
+            binding.forecastLinearLayout.removeAllViews()
+
+            val dataList = forecastData?.list?.subList(0, forecastData.list.size.coerceAtMost(10))
+
+            if (dataList != null) {
+                for (data in dataList) {
+                    val forecastCard = layoutInflater.inflate(
+                        R.layout.forecast_card,
+                        binding.forecastLinearLayout,
+                        false
+                    )
+
+                    val dayOfTheWeekTextView =
+                        forecastCard.findViewById<TextView>(R.id.dayOfTheWeek)
+                    val forecastWeatherIconImageView =
+                        forecastCard.findViewById<ImageView>(R.id.forecastWeatherIcon)
+                    val forecastTemperatureTextView =
+                        forecastCard.findViewById<TextView>(R.id.forecastTemperature)
+
+                    dayOfTheWeekTextView.text = viewModel.getHour(data.dt)
+                    forecastWeatherIconImageView.setImageResource(
+                        viewModel.getWeatherIcon(
+                            data.weather?.get(0)?.main ?: "Clear",
+                            data.weather?.get(0)?.description ?: "Clear"
+                        )
+                    )
+                    forecastTemperatureTextView.text =
+                        viewModel.getTemperature(data.main?.temp ?: 0.0).toString()
+                            .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+
+                    binding.forecastLinearLayout.addView(forecastCard)
+                }
+            }
         }
 
         return root
