@@ -13,9 +13,9 @@ import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
 import com.example.weather_app.data_classes.CombinedLocationData
-import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.databinding.FragmentLocationBinding
 import com.example.weather_app.databinding.FragmentSettingsBinding
+
 
 class LocationFragment : Fragment(), LocationCardClickListener {
 

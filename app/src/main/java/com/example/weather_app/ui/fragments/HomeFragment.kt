@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.example.weather_app.databinding.FragmentHomeBinding
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import com.example.weather_app.BuildConfig
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
 

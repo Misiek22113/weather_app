@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.ui.fragments.LocationFragment
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

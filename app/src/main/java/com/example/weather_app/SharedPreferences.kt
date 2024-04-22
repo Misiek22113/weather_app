@@ -2,8 +2,6 @@ import android.content.Context
 import android.util.Log
 import com.example.weather_app.data_classes.CombinedLocationData
 import com.google.gson.Gson
-//import com.example.weather_app.data_classes.SavedLocation
-import com.example.weather_app.data_classes.WeatherForecastResponse
 import com.google.gson.reflect.TypeToken
 
 class SharedPreferences(context: Context) {
