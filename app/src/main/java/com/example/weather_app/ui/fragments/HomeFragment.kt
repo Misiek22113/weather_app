@@ -37,12 +37,10 @@ class HomeFragment : Fragment() {
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             val temp = viewModel.getTemperature(it?.weatherData?.main?.temp ?: 0.0)
             val feelsLikeTemp = viewModel.getTemperature(it?.weatherData?.main?.feelsLike ?: 0.0)
-            binding.locationNameText.text =
-                viewModel.selectedLocationWeather.value?.name ?: "Loading..."
+            binding.locationNameText.text = it.weatherData.name
             binding.temperature.text =
                 temp.toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
-            binding.weatherDescription.text =
-                viewModel.selectedLocationWeather.value?.weather?.get(0)?.description
+            binding.weatherDescription.text = it.weatherData.weather[0].description
             binding.weatherIcon.setImageResource(
                 viewModel.getWeatherIcon(
                     it?.weatherData?.weather?.get(0)?.main ?: "Clear",

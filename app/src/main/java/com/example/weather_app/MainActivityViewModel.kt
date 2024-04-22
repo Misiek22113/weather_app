@@ -175,17 +175,19 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    private fun addLocation(locationData: WeatherData, locationForecast: WeatherForecastResponse) {
+    private suspend fun addLocation(locationData: WeatherData, locationForecast: WeatherForecastResponse) {
         val combinedLocationData = CombinedLocationData(
             locationData,
             locationForecast
         )
 
-        val locations = locations.value?.toMutableList() ?: mutableListOf()
-        locations.add(combinedLocationData)
+        withContext(Dispatchers.Main) {
+            val locations = locations.value?.toMutableList() ?: mutableListOf()
+            locations.add(combinedLocationData)
 
-        this.locations.value = locations
-        sharedPreferences.saveLocations(locations)
+            this@MainActivityViewModel.locations.value = locations
+            sharedPreferences.saveLocations(locations)
+        }
 
         Log.i("Logcat", ("Wybrane Miasto: $combinedLocationData").toString())
     }
