@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var handler = Handler(Looper.getMainLooper())
     private val updateLocationsRunnable = object : Runnable {
         override fun run() {
-            if(viewModel.isInternetConnectionEstablished()){
+            if (viewModel.isInternetConnectionEstablished()) {
                 viewModel.updateSavedLocationsData()
             }
             handler.postDelayed(this, 300000)
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         viewModel.getLocationsFromStorage()
-
+        viewModel.getCurrentLocation()
     }
 
     fun navigateToLocation() {

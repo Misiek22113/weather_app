@@ -66,14 +66,14 @@ class LocationFragment : Fragment(), LocationCardClickListener {
 
         settingsBinding.speedSwitch.isChecked = speedUnit == "mph"
 
-        settingsBinding.speedSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        settingsBinding.speedSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setSpeedUnit(isChecked)
             binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
         }
 
         settingsBinding.temperatureSwitch.isChecked = temperatureUnit == "celsius"
 
-        settingsBinding.temperatureSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        settingsBinding.temperatureSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setTemperatureUnit(isChecked)
             binding.LocationRecyclerView.adapter?.notifyDataSetChanged()
         }

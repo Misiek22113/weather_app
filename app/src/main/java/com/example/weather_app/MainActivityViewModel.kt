@@ -24,24 +24,21 @@ import java.text.DecimalFormat
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
-    val apiKey = BuildConfig.API_KEY
-    var retrofit = RetrofitWeatherClient.create()
+    private val apiKey = BuildConfig.API_KEY
+    private var retrofit = RetrofitWeatherClient.create()
+    private val locations = MutableLiveData<List<CombinedLocationData>>()
+    private val sharedPreferences = SharedPreferences(application)
+    private val internetConnectionManager: ConnectivityManager =
+        application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     var text = MutableLiveData<String>()
     var currentLocation = MutableLiveData<CombinedLocationData>()
     val savedLocations: LiveData<List<CombinedLocationData>> get() = locations
-    private val locations = MutableLiveData<List<CombinedLocationData>>()
-    private val sharedPreferences = SharedPreferences(application)
-    private val selectedLocationData = MutableLiveData<WeatherData?>()
-    val selectedLocationWeather: MutableLiveData<WeatherData?> get() = selectedLocationData
-    private val internetConnectionManager: ConnectivityManager =
-        application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     fun isInternetConnectionEstablished(): Boolean {
         Log.i("Logcat", ("isInternetConnectionEstablished").toString())
         val activeNetwork = internetConnectionManager.activeNetwork
         return activeNetwork != null
     }
-
 
     fun fetchLocation(
         query: String,
@@ -65,23 +62,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-//    private fun fetchLocationData(lat: Double, lon: Double) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = retrofit.getLocationWeather(lat, lon, apiKey)
-//            if (response.isSuccessful) {
-//                val locationResponse = response.body()
-//                withContext(Dispatchers.Main) {
-//                    addLocation(locationResponse!!, lat, lon)
-//                }
-//            } else {
-//                response.errorBody()?.let {
-//                    val errorBodyString = it.string()
-//                    Log.i("Logcat", errorBodyString)
-//                }
-//            }
-//        }
-//    }
-
     private suspend fun fetchLocationData(lat: Double, lon: Double): WeatherData? {
         val response = retrofit.getLocationWeather(lat, lon, apiKey)
         return if (response.isSuccessful) {
@@ -95,24 +75,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-
-    //    fun fetchCurrentWeather(lat: Double, lon: Double, apiKey: String) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = retrofit.getLocationWeather(lat, lon, apiKey)
-//            if (response.isSuccessful) {
-//                val locationResponse = response.body()
-//                withContext(Dispatchers.Main) {
-//                    selectedLocationData.value = locationResponse
-//                    Log.i("Logcat", locationResponse.toString())
-//                }
-//            } else {
-//                response.errorBody()?.let {
-//                    val errorBodyString = it.string()
-//                    Log.i("Logcat", errorBodyString)
-//                }
-//            }
-//        }
-//    }
     private suspend fun fetchForecastWeather(lat: Double, lon: Double): WeatherForecastResponse? {
         val response = retrofit.getForecastWeather(lat, lon, apiKey)
         return if (response.isSuccessful) {
@@ -125,25 +87,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             null
         }
     }
-
-//    fun fetchForecastWeather(lat: Double, lon: Double, apiKey: String) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = retrofit.getForecastWeather(lat, lon, apiKey)
-//            if (response.isSuccessful) {
-//                val locationResponse = response.body()
-//                withContext(Dispatchers.Main) {
-//                    selectedLocationForecastData.value = locationResponse
-//                    sharedPreferences.setLocationForecast(locationResponse!!)
-//                    Log.i("Logcat", locationResponse.toString())
-//                }
-//            } else {
-//                response.errorBody()?.let {
-//                    val errorBodyString = it.string()
-//                    Log.i("Logcat", errorBodyString)
-//                }
-//            }
-//        }
-//    }
 
     fun createNewCombinedLocationData(lat: Double, lon: Double) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -175,7 +118,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    private suspend fun addLocation(locationData: WeatherData, locationForecast: WeatherForecastResponse) {
+    private suspend fun addLocation(
+        locationData: WeatherData,
+        locationForecast: WeatherForecastResponse
+    ) {
         val combinedLocationData = CombinedLocationData(
             locationData,
             locationForecast
@@ -191,63 +137,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
         Log.i("Logcat", ("Wybrane Miasto: $combinedLocationData").toString())
     }
-
-    private suspend fun fetchUpdateLocationData(
-        lat: Double,
-        lon: Double,
-        apiKey: String
-    ): WeatherData? {
-        val response = retrofit.getLocationWeather(lat, lon, apiKey)
-        return if (response.isSuccessful) {
-            response.body()
-        } else {
-            response.errorBody()?.let {
-                val errorBodyString = it.string()
-                Log.i("Logcat", errorBodyString)
-            }
-            null
-        }
-    }
-
-//    fun updateSavedLocations() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val locations = locations.value?.toMutableList() ?: mutableListOf()
-//            locations.forEachIndexed { index, savedLocation ->
-//                val updatedLocation = fetchUpdateLocationData(
-//                    savedLocation.coord.lat,
-//                    savedLocation.coord.lon,
-//                    apiKey
-//                )
-//                updatedLocation?.let {
-//                    val newSavedLocation = it
-//                    locations[index] = newSavedLocation
-//                }
-//            }
-//            withContext(Dispatchers.Main) {
-//                this@MainActivityViewModel.locations.value = locations
-//                sharedPreferences.saveLocations(locations)
-//            }
-//        }
-//    }
-
-//    fun updateSelectedLocationWeather() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            Log.i("Logcat", ("Api_key: $apiKey").toString())
-//            val currentLocation = currentLocation.value
-//            currentLocation?.let {
-//                val updatedLocation = fetchUpdateLocationData(
-//                    it.coord.lat,
-//                    it.coord.lon,
-//                    apiKey
-//                )
-//                updatedLocation?.let {
-//                    withContext(Dispatchers.Main) {
-//                        selectedLocationData.value = updatedLocation
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     fun deleteLocation(location: CombinedLocationData) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
@@ -310,10 +199,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun getSpeed(speed: Double): String {
         val unit = sharedPreferences.getSpeedUnit()
         val df = DecimalFormat("#.##")
-        if (unit == "m/s") {
-            return df.format(speed).toString()
+        return if (unit == "m/s") {
+            df.format(speed).toString()
         } else {
-            return df.format(speed * 2.23).toString()
+            df.format(speed * 2.23).toString()
         }
     }
 

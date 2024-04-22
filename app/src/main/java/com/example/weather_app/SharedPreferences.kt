@@ -13,7 +13,6 @@ class SharedPreferences(context: Context) {
     private val weatherLocationKey = "weather_location"
     private val temperatureUnitKey = "temperature_unit"
     private val speedUnitKey = "speed_unit"
-    private val forecastKey = "forecast"
 
     fun saveLocations(location: List<CombinedLocationData>) {
         val locationJson = gson.toJson(location)
@@ -62,21 +61,4 @@ class SharedPreferences(context: Context) {
         return sharedPref.getString(speedUnitKey, "m/s")!!
     }
 
-    fun setLocationForecast(forecast: WeatherForecastResponse) {
-        val locationForecastJson = gson.toJson(forecast)
-        sharedPref.edit().putString(forecastKey, locationForecastJson).apply()
-    }
-
-    fun getLocationForecast(): WeatherForecastResponse? {
-        val locationForecastJson = sharedPref.getString(forecastKey, null)
-        return if (locationForecastJson != null) {
-            gson.fromJson(locationForecastJson, WeatherForecastResponse::class.java)
-        } else {
-            null
-        }
-    }
-
-    fun clearSharedPreferences() {
-        sharedPref.edit().clear().apply()
-    }
 }

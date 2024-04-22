@@ -31,7 +31,7 @@ class SearchLocationAdapter(
 
         init {
             view.setOnClickListener {
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val location = locations[position]
                     listener.onSearchLocationCardClick(location)

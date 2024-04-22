@@ -37,7 +37,6 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
         else {
             Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     override fun onCreateView(

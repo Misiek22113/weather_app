@@ -34,6 +34,15 @@ class HomeFragment : Fragment() {
 
         viewModel.getCurrentLocation()
 
+        binding.refreshButton.setOnClickListener {
+            if (viewModel.isInternetConnectionEstablished()) {
+                viewModel.updateSavedLocationsData()
+                Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             val temp = viewModel.getTemperature(it?.weatherData?.main?.temp ?: 0.0)
             val feelsLikeTemp = viewModel.getTemperature(it?.weatherData?.main?.feelsLike ?: 0.0)
@@ -51,15 +60,19 @@ class HomeFragment : Fragment() {
             binding.clouds.dataValue.text = it?.weatherData?.clouds?.all.toString().plus("%")
             binding.wind.dataDescription.text = "wind"
             binding.wind.dataValue.text =
-                viewModel.getSpeed(it?.weatherData?.wind?.speed ?: 0.0).plus(" " + viewModel.getSpeedUnit())
+                viewModel.getSpeed(it?.weatherData?.wind?.speed ?: 0.0)
+                    .plus(" " + viewModel.getSpeedUnit())
             binding.humidity.dataDescription.text = "humidity"
             binding.humidity.dataValue.text = it?.weatherData?.main?.humidity.toString().plus("%")
             binding.pressure.dataDescription.text = "pressure"
-            binding.pressure.dataValue.text = it?.weatherData?.main?.pressure.toString().plus(" hPa")
+            binding.pressure.dataValue.text =
+                it?.weatherData?.main?.pressure.toString().plus(" hPa")
             binding.sunrise.dataDescription.text = "sunrise"
-            binding.sunrise.dataValue.text = viewModel.getSunriseSunset(it?.weatherData?.sys?.sunrise ?: 0)
+            binding.sunrise.dataValue.text =
+                viewModel.getSunriseSunset(it?.weatherData?.sys?.sunrise ?: 0)
             binding.sunset.dataDescription.text = "sunset"
-            binding.sunset.dataValue.text = viewModel.getSunriseSunset(it?.weatherData?.sys?.sunset ?: 0)
+            binding.sunset.dataValue.text =
+                viewModel.getSunriseSunset(it?.weatherData?.sys?.sunset ?: 0)
             binding.feelsLike.dataDescription.text = "feels like"
             binding.feelsLike.dataValue.text = feelsLikeTemp.toString()
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
@@ -71,7 +84,10 @@ class HomeFragment : Fragment() {
 
             binding.forecastLinearLayout.removeAllViews()
 
-            val dataList = forecastData?.forecastData?.list?.subList(0, forecastData.forecastData.list.size.coerceAtMost(10))
+            val dataList = forecastData?.forecastData?.list?.subList(
+                0,
+                forecastData.forecastData.list.size.coerceAtMost(10)
+            )
 
             if (dataList != null) {
                 for (data in dataList) {
@@ -91,12 +107,12 @@ class HomeFragment : Fragment() {
                     dayOfTheWeekTextView.text = viewModel.getHour(data.dt)
                     forecastWeatherIconImageView.setImageResource(
                         viewModel.getWeatherIcon(
-                            data.weather[0].main ?: "Clear",
-                            data.weather[0].description ?: "Clear"
+                            data.weather[0].main,
+                            data.weather[0].description
                         )
                     )
                     forecastTemperatureTextView.text =
-                        viewModel.getTemperature(data.main.temp ?: 0.0).toString()
+                        viewModel.getTemperature(data.main.temp).toString()
                             .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
 
                     binding.forecastLinearLayout.addView(forecastCard)

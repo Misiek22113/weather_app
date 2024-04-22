@@ -64,14 +64,14 @@ class LocationAdapter(
 
         init {
             deleteButton.setOnClickListener {
-                val location = locations[adapterPosition]
+                val location = locations[absoluteAdapterPosition]
                 viewModel.deleteLocation(location)
             }
 
             view.setOnClickListener {
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val location = locations[position]
+                    val location = locations[absoluteAdapterPosition]
                     listener.onLocationCardClick(location)
                 }
             }
