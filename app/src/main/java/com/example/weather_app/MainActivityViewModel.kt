@@ -27,17 +27,19 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val apiKey = BuildConfig.API_KEY
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
-    var currentLocation = MutableLiveData<SavedLocation>()
-    val savedLocations: LiveData<List<SavedLocation>> get() = locations
-    private val locations = MutableLiveData<List<SavedLocation>>()
+    var currentLocation = MutableLiveData<WeatherResponse>()
+    val savedLocations: LiveData<List<WeatherResponse>> get() = locations
+    private val locations = MutableLiveData<List<WeatherResponse>>()
     private val sharedPreferences = SharedPreferences(application)
     private val selectedLocationData = MutableLiveData<WeatherResponse?>()
     private val selectedLocationForecastData = MutableLiveData<WeatherForecastResponse?>()
     val selectedLocationWeather: MutableLiveData<WeatherResponse?> get() = selectedLocationData
     val selectedLocationForecast: MutableLiveData<WeatherForecastResponse?> get() = selectedLocationForecastData
-    private val internetConnectionManager: ConnectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val internetConnectionManager: ConnectivityManager =
+        application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     fun isInternetConnectionEstablished(): Boolean {
+        Log.i("Logcat", ("isInternetConnectionEstablished").toString())
         val activeNetwork = internetConnectionManager.activeNetwork
         return activeNetwork != null
     }
@@ -119,23 +121,36 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+//    private fun addLocation(location: WeatherResponse, lat: Double, lon: Double) {
+//        val savedLocation = SavedLocation(
+//            location.name,
+//            location.coord.lat,
+//            location.coord.lon,
+//            false,
+//            location.main.temp,
+//            location.weather[0].main,
+//            location.weather[0].description
+//        )
+//        savedLocation.lat = lat
+//        savedLocation.lon = lon
+//        val locations = locations.value?.toMutableList() ?: mutableListOf()
+//        locations.add(savedLocation)
+//        this.locations.value = locations
+//        sharedPreferences.saveLocations(locations)
+//        Log.i("Logcat", ("Wybrane Miasto: $savedLocation").toString())
+//    }
+
     private fun addLocation(location: WeatherResponse, lat: Double, lon: Double) {
-        val savedLocation = SavedLocation(
-            location.name,
-            location.coord.lat,
-            location.coord.lon,
-            false,
-            location.main.temp,
-            location.weather[0].main,
-            location.weather[0].description
-        )
-        savedLocation.lat = lat
-        savedLocation.lon = lon
+        location.coord.lat = lat
+        location.coord.lon = lon
+
         val locations = locations.value?.toMutableList() ?: mutableListOf()
-        locations.add(savedLocation)
+        locations.add(location)
+
         this.locations.value = locations
         sharedPreferences.saveLocations(locations)
-        Log.i("Logcat", ("Wybrane Miasto: $savedLocation").toString())
+
+        Log.i("Logcat", ("Wybrane Miasto: $location").toString())
     }
 
     private suspend fun fetchUpdateLocationData(
@@ -160,20 +175,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             val locations = locations.value?.toMutableList() ?: mutableListOf()
             locations.forEachIndexed { index, savedLocation ->
                 val updatedLocation = fetchUpdateLocationData(
-                    savedLocation.lat,
-                    savedLocation.lon,
+                    savedLocation.coord.lat,
+                    savedLocation.coord.lon,
                     apiKey
                 )
                 updatedLocation?.let {
-                    val newSavedLocation = SavedLocation(
-                        it.name,
-                        it.coord.lat,
-                        it.coord.lon,
-                        false,
-                        it.main.temp,
-                        it.weather[0].main,
-                        it.weather[0].description
-                    )
+                    val newSavedLocation = it
                     locations[index] = newSavedLocation
                 }
             }
@@ -190,8 +197,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             val currentLocation = currentLocation.value
             currentLocation?.let {
                 val updatedLocation = fetchUpdateLocationData(
-                    it.lat,
-                    it.lon,
+                    it.coord.lat,
+                    it.coord.lon,
                     apiKey
                 )
                 updatedLocation?.let {
@@ -203,14 +210,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun deleteLocation(location: SavedLocation) {
+    fun deleteLocation(location: WeatherResponse) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
         this.locations.value = locations
         sharedPreferences.saveLocations(locations)
     }
 
-    fun setCurrentLocation(location: SavedLocation) {
+    fun setCurrentLocation(location: WeatherResponse) {
         this.currentLocation.value = location
         sharedPreferences.setWeatherLocation(location)
     }
@@ -225,7 +232,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun isLocationSaved(location: Location): Boolean {
         return locations.value?.any {
-            it.lat == location.lat && it.lon == location.lon
+            it.coord.lat == location.lat && it.coord.lon == location.lon
         }
             ?: false
     }
@@ -308,4 +315,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         return formatter.format(date)
     }
 
+    
+    fun clearSharedPref(){
+        sharedPreferences.clearSharedPreferences()
+    }
 }

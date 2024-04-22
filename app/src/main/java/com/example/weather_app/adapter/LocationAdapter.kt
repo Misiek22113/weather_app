@@ -14,16 +14,17 @@ import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
 import com.example.weather_app.data_classes.Location
 import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.data_classes.WeatherResponse
 import com.example.weather_app.ui.fragments.LocationFragment
 import com.example.weather_app.ui.fragments.SearchFragment
 
 interface LocationCardClickListener {
-    fun onLocationCardClick(location: SavedLocation)
+    fun onLocationCardClick(location: WeatherResponse)
 }
 
 
 class LocationAdapter(
-    private var locations: List<SavedLocation>,
+    private var locations: List<WeatherResponse>,
     private val viewModel: MainActivityViewModel,
     private val listener: LocationFragment
 ) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
@@ -38,12 +39,12 @@ class LocationAdapter(
         val location = locations[position]
         holder.cityTextView.text = location.name
         holder.temperatureTextView.text =
-            viewModel.getTemperature(location.temperature).toString()
+            viewModel.getTemperature(location.main.temp).toString()
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
         holder.weatherImageView.setImageResource(
             viewModel.getWeatherIcon(
-                location.weather,
-                location.weatherDescription
+                location.weather[0].main,
+                location.weather[0].description
             )
         )
     }
@@ -53,7 +54,7 @@ class LocationAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateLocations(newLocations: List<SavedLocation>) {
+    fun updateLocations(newLocations: List<WeatherResponse>) {
         Log.i("Logcat", newLocations.toString())
         this.locations = newLocations
         notifyDataSetChanged()

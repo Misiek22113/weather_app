@@ -37,9 +37,14 @@ class HomeFragment : Fragment() {
         viewModel.getCurrentLocationForecast()
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
-            if(viewModel.isInternetConnectionEstablished()){
-                viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
-                viewModel.fetchForecastWeather(it.lat, it.lon, apiKey)
+            if(viewModel.isInternetConnectionEstablished() && it != null){
+                try{
+                    viewModel.fetchCurrentWeather(it.coord.lat, it.coord.lon, apiKey)
+                    viewModel.fetchForecastWeather(it.coord.lat, it.coord.lon, apiKey)
+                }
+                catch (e: Exception){
+                    Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
             }
@@ -48,7 +53,7 @@ class HomeFragment : Fragment() {
         binding.refreshButton.setOnClickListener {
             viewModel.currentLocation.value?.let {
                 if(viewModel.isInternetConnectionEstablished()){
-                    viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+                    viewModel.fetchCurrentWeather(it.coord.lat, it.coord.lon, apiKey)
                 }
                 else {
                     Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()

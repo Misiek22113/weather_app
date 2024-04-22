@@ -16,6 +16,7 @@ import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
 import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.data_classes.WeatherResponse
 import com.example.weather_app.databinding.FragmentLocationBinding
 import com.example.weather_app.databinding.FragmentSettingsBinding
 
@@ -25,7 +26,7 @@ class LocationFragment : Fragment(), LocationCardClickListener {
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
 
-    override fun onLocationCardClick(location: SavedLocation) {
+    override fun onLocationCardClick(location: WeatherResponse) {
         viewModel.setCurrentLocation(location)
     }
 

@@ -1,6 +1,5 @@
 package com.example.weather_app
 
-import SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -54,14 +53,11 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
 
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         viewModel.setLocations()
+
     }
-
-    private fun setUpSettingsDialog() {
-
-    };
 
     fun navigateToLocation() {
         // Create a new instance of the fragment you want to display
