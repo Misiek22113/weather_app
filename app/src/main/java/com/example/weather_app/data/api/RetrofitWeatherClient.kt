@@ -1,7 +1,7 @@
 package com.example.weather_app.data.api
 
 import com.example.weather_app.data_classes.Location
-import com.example.weather_app.data_classes.WeatherResponse
+import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.data_classes.WeatherForecastResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -29,7 +29,7 @@ interface ApiWeatherService {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String
-    ): Response<WeatherResponse>
+    ): Response<WeatherData>
 
 }
 

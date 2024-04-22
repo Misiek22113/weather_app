@@ -2,36 +2,36 @@ package com.example.weather_app.data_classes
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherResponse(
-    val coord: NewCoord,
-    val weather: List<NewWeather>,
+data class WeatherData(
+    val coord: Coord,
+    val weather: List<Weather>,
     val base: String,
-    val main: NewMain,
+    val main: Main,
     val visibility: Int,
-    val wind: NewWind,
-    val rain: NewRain,
-    val clouds: NewClouds,
+    val wind: Wind,
+    val rain: Rain,
+    val clouds: Clouds,
     val dt: Long,
-    val sys: NewSys,
+    val sys: Sys,
     val timezone: Int,
     val id: Int,
     val name: String,
     val cod: Int
 )
 
-data class NewCoord(
+data class Coord(
     var lon: Double,
     var lat: Double
 )
 
-data class NewWeather(
+data class Weather(
     val id: Int,
     val main: String,
     val description: String,
     val icon: String
 )
 
-data class NewMain(
+data class Main(
     val temp: Double,
     @SerializedName("feels_like") val feelsLike: Double,
     @SerializedName("temp_min") val tempMin: Double,
@@ -42,21 +42,21 @@ data class NewMain(
     @SerializedName("grnd_level") val groundLevel: Int
 )
 
-data class NewWind(
+data class Wind(
     val speed: Double,
     val deg: Int,
     val gust: Double
 )
 
-data class NewRain(
+data class Rain(
     @SerializedName("1h") val oneHour: Double
 )
 
-data class NewClouds(
+data class Clouds(
     val all: Int
 )
 
-data class NewSys(
+data class Sys(
     val type: Int,
     val id: Int,
     val country: String,

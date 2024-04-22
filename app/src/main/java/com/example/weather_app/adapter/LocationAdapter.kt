@@ -8,23 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
-import com.example.weather_app.data_classes.Location
-import com.example.weather_app.data_classes.SavedLocation
-import com.example.weather_app.data_classes.WeatherResponse
+import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.ui.fragments.LocationFragment
-import com.example.weather_app.ui.fragments.SearchFragment
 
 interface LocationCardClickListener {
-    fun onLocationCardClick(location: WeatherResponse)
+    fun onLocationCardClick(location: WeatherData)
 }
 
 
 class LocationAdapter(
-    private var locations: List<WeatherResponse>,
+    private var locations: List<WeatherData>,
     private val viewModel: MainActivityViewModel,
     private val listener: LocationFragment
 ) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
@@ -54,7 +50,7 @@ class LocationAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateLocations(newLocations: List<WeatherResponse>) {
+    fun updateLocations(newLocations: List<WeatherData>) {
         Log.i("Logcat", newLocations.toString())
         this.locations = newLocations
         notifyDataSetChanged()

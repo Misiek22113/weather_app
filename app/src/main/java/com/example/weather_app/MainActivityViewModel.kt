@@ -12,8 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.Location
-import com.example.weather_app.data_classes.WeatherResponse
-import com.example.weather_app.data_classes.SavedLocation
+import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.data_classes.WeatherForecastResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,13 +26,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val apiKey = BuildConfig.API_KEY
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
-    var currentLocation = MutableLiveData<WeatherResponse>()
-    val savedLocations: LiveData<List<WeatherResponse>> get() = locations
-    private val locations = MutableLiveData<List<WeatherResponse>>()
+    var currentLocation = MutableLiveData<WeatherData>()
+    val savedLocations: LiveData<List<WeatherData>> get() = locations
+    private val locations = MutableLiveData<List<WeatherData>>()
     private val sharedPreferences = SharedPreferences(application)
-    private val selectedLocationData = MutableLiveData<WeatherResponse?>()
+    private val selectedLocationData = MutableLiveData<WeatherData?>()
     private val selectedLocationForecastData = MutableLiveData<WeatherForecastResponse?>()
-    val selectedLocationWeather: MutableLiveData<WeatherResponse?> get() = selectedLocationData
+    val selectedLocationWeather: MutableLiveData<WeatherData?> get() = selectedLocationData
     val selectedLocationForecast: MutableLiveData<WeatherForecastResponse?> get() = selectedLocationForecastData
     private val internetConnectionManager: ConnectivityManager =
         application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -140,7 +139,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 //        Log.i("Logcat", ("Wybrane Miasto: $savedLocation").toString())
 //    }
 
-    private fun addLocation(location: WeatherResponse, lat: Double, lon: Double) {
+    private fun addLocation(location: WeatherData, lat: Double, lon: Double) {
         location.coord.lat = lat
         location.coord.lon = lon
 
@@ -157,7 +156,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         lat: Double,
         lon: Double,
         apiKey: String
-    ): WeatherResponse? {
+    ): WeatherData? {
         val response = retrofit.getLocationWeather(lat, lon, apiKey)
         return if (response.isSuccessful) {
             response.body()
@@ -210,14 +209,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun deleteLocation(location: WeatherResponse) {
+    fun deleteLocation(location: WeatherData) {
         val locations = locations.value?.toMutableList() ?: mutableListOf()
         locations.remove(location)
         this.locations.value = locations
         sharedPreferences.saveLocations(locations)
     }
 
-    fun setCurrentLocation(location: WeatherResponse) {
+    fun setCurrentLocation(location: WeatherData) {
         this.currentLocation.value = location
         sharedPreferences.setWeatherLocation(location)
     }
