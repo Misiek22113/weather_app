@@ -1,9 +1,9 @@
 import android.content.Context
 import android.util.Log
+import com.example.weather_app.data_classes.CombinedLocationData
 import com.google.gson.Gson
-import com.example.weather_app.data_classes.SavedLocation
+//import com.example.weather_app.data_classes.SavedLocation
 import com.example.weather_app.data_classes.WeatherForecastResponse
-import com.example.weather_app.data_classes.WeatherData
 import com.google.gson.reflect.TypeToken
 
 class SharedPreferences(context: Context) {
@@ -15,30 +15,30 @@ class SharedPreferences(context: Context) {
     private val speedUnitKey = "speed_unit"
     private val forecastKey = "forecast"
 
-    fun saveLocations(location: List<WeatherData>) {
+    fun saveLocations(location: List<CombinedLocationData>) {
         val locationJson = gson.toJson(location)
         sharedPref.edit().putString(locationsKey, locationJson).apply()
     }
 
-    fun getLocations(): List<WeatherData>? {
+    fun getLocations(): List<CombinedLocationData>? {
         val locationJson = sharedPref.getString(locationsKey, null)
         return if (locationJson != null) {
-            val type = object : TypeToken<List<SavedLocation>>() {}.type
+            val type = object : TypeToken<List<CombinedLocationData>>() {}.type
             gson.fromJson(locationJson, type)
         } else {
             null
         }
     }
 
-    fun setWeatherLocation(location: WeatherData) {
+    fun setCurrentWeatherLocation(location: CombinedLocationData) {
         val locationJson = gson.toJson(location)
         sharedPref.edit().putString(weatherLocationKey, locationJson).apply()
     }
 
-    fun getWeatherLocation(): WeatherData? {
+    fun getCurrentWeatherLocation(): CombinedLocationData? {
         val locationJson = sharedPref.getString(weatherLocationKey, null)
         return if (locationJson != null) {
-            gson.fromJson(locationJson, WeatherData::class.java)
+            gson.fromJson(locationJson, CombinedLocationData::class.java)
         } else {
             null
         }

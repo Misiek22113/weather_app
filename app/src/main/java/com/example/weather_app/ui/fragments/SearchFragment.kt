@@ -18,7 +18,6 @@ import com.example.weather_app.data_classes.Location
 import com.example.weather_app.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment(), SearchLocationCardClickListener {
-
     private var _binding: FragmentSearchBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
@@ -32,7 +31,7 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
 
     override fun onSearchLocationCardClick(location: Location) {
         if(viewModel.isInternetConnectionEstablished()){
-            viewModel.fetchLocationData(location.lat, location.lon, apiKey)
+            viewModel.createNewCombinedLocationData(location.lat, location.lon)
             onNavigate()
         }
         else {
@@ -40,7 +39,6 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
         }
 
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

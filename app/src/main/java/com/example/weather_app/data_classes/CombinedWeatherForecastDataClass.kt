@@ -1,6 +1,6 @@
 package com.example.weather_app.data_classes
 
-data class CombinedData(
+data class CombinedLocationData(
     val weatherData: WeatherData,
     val forecastData: WeatherForecastResponse
 )

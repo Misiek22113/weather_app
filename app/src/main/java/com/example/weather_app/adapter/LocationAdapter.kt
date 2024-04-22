@@ -11,16 +11,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
+import com.example.weather_app.data_classes.CombinedLocationData
 import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.ui.fragments.LocationFragment
 
 interface LocationCardClickListener {
-    fun onLocationCardClick(location: WeatherData)
+    fun onLocationCardClick(location: CombinedLocationData)
 }
 
-
 class LocationAdapter(
-    private var locations: List<WeatherData>,
+    private var locations: List<CombinedLocationData>,
     private val viewModel: MainActivityViewModel,
     private val listener: LocationFragment
 ) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
@@ -33,14 +33,14 @@ class LocationAdapter(
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
         val location = locations[position]
-        holder.cityTextView.text = location.name
+        holder.cityTextView.text = location.weatherData.name
         holder.temperatureTextView.text =
-            viewModel.getTemperature(location.main.temp).toString()
+            viewModel.getTemperature(location.weatherData.main.temp).toString()
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
         holder.weatherImageView.setImageResource(
             viewModel.getWeatherIcon(
-                location.weather[0].main,
-                location.weather[0].description
+                location.weatherData.weather[0].main,
+                location.weatherData.weather[0].description
             )
         )
     }
@@ -50,7 +50,7 @@ class LocationAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateLocations(newLocations: List<WeatherData>) {
+    fun updateLocations(newLocations: List<CombinedLocationData>) {
         Log.i("Logcat", newLocations.toString())
         this.locations = newLocations
         notifyDataSetChanged()

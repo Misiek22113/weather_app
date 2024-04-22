@@ -21,7 +21,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
-    private val apiKey = BuildConfig.API_KEY
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -34,37 +33,10 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         viewModel.getCurrentLocation()
-        viewModel.getCurrentLocationForecast()
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
-            if(viewModel.isInternetConnectionEstablished() && it != null){
-                try{
-                    viewModel.fetchCurrentWeather(it.coord.lat, it.coord.lon, apiKey)
-                    viewModel.fetchForecastWeather(it.coord.lat, it.coord.lon, apiKey)
-                }
-                catch (e: Exception){
-                    Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.refreshButton.setOnClickListener {
-            viewModel.currentLocation.value?.let {
-                if(viewModel.isInternetConnectionEstablished()){
-                    viewModel.fetchCurrentWeather(it.coord.lat, it.coord.lon, apiKey)
-                }
-                else {
-                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
-                }
-            }
-            Toast.makeText(context, "Weather has been updated", Toast.LENGTH_SHORT).show()
-        }
-
-        viewModel.selectedLocationWeather.observe(viewLifecycleOwner) {
-            val temp = viewModel.getTemperature(it?.main?.temp ?: 0.0)
-            val feelsLikeTemp = viewModel.getTemperature(it?.main?.feelsLike ?: 0.0)
+            val temp = viewModel.getTemperature(it?.weatherData?.main?.temp ?: 0.0)
+            val feelsLikeTemp = viewModel.getTemperature(it?.weatherData?.main?.feelsLike ?: 0.0)
             binding.locationNameText.text =
                 viewModel.selectedLocationWeather.value?.name ?: "Loading..."
             binding.temperature.text =
@@ -73,35 +45,35 @@ class HomeFragment : Fragment() {
                 viewModel.selectedLocationWeather.value?.weather?.get(0)?.description
             binding.weatherIcon.setImageResource(
                 viewModel.getWeatherIcon(
-                    it?.weather?.get(0)?.main ?: "Clear",
-                    it?.weather?.get(0)?.description ?: "Clear"
+                    it?.weatherData?.weather?.get(0)?.main ?: "Clear",
+                    it?.weatherData?.weather?.get(0)?.description ?: "Clear"
                 )
             )
             binding.clouds.dataDescription.text = "clouds"
-            binding.clouds.dataValue.text = it?.clouds?.all.toString().plus("%")
+            binding.clouds.dataValue.text = it?.weatherData?.clouds?.all.toString().plus("%")
             binding.wind.dataDescription.text = "wind"
             binding.wind.dataValue.text =
-                viewModel.getSpeed(it?.wind?.speed ?: 0.0).plus(" " + viewModel.getSpeedUnit())
+                viewModel.getSpeed(it?.weatherData?.wind?.speed ?: 0.0).plus(" " + viewModel.getSpeedUnit())
             binding.humidity.dataDescription.text = "humidity"
-            binding.humidity.dataValue.text = it?.main?.humidity.toString().plus("%")
+            binding.humidity.dataValue.text = it?.weatherData?.main?.humidity.toString().plus("%")
             binding.pressure.dataDescription.text = "pressure"
-            binding.pressure.dataValue.text = it?.main?.pressure.toString().plus(" hPa")
+            binding.pressure.dataValue.text = it?.weatherData?.main?.pressure.toString().plus(" hPa")
             binding.sunrise.dataDescription.text = "sunrise"
-            binding.sunrise.dataValue.text = viewModel.getSunriseSunset(it?.sys?.sunrise ?: 0)
+            binding.sunrise.dataValue.text = viewModel.getSunriseSunset(it?.weatherData?.sys?.sunrise ?: 0)
             binding.sunset.dataDescription.text = "sunset"
-            binding.sunset.dataValue.text = viewModel.getSunriseSunset(it?.sys?.sunset ?: 0)
+            binding.sunset.dataValue.text = viewModel.getSunriseSunset(it?.weatherData?.sys?.sunset ?: 0)
             binding.feelsLike.dataDescription.text = "feels like"
             binding.feelsLike.dataValue.text = feelsLikeTemp.toString()
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
             binding.visibility.dataDescription.text = "visibility"
-            binding.visibility.dataValue.text = it?.visibility.toString().plus(" m")
+            binding.visibility.dataValue.text = it?.weatherData?.visibility.toString().plus(" m")
         }
 
-        viewModel.selectedLocationForecast.observe(viewLifecycleOwner) { forecastData ->
+        viewModel.currentLocation.observe(viewLifecycleOwner) { forecastData ->
 
             binding.forecastLinearLayout.removeAllViews()
 
-            val dataList = forecastData?.list?.subList(0, forecastData.list.size.coerceAtMost(10))
+            val dataList = forecastData?.forecastData?.list?.subList(0, forecastData.forecastData.list.size.coerceAtMost(10))
 
             if (dataList != null) {
                 for (data in dataList) {

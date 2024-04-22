@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.LocationAdapter
 import com.example.weather_app.adapter.LocationCardClickListener
+import com.example.weather_app.data_classes.CombinedLocationData
 import com.example.weather_app.data_classes.WeatherData
 import com.example.weather_app.databinding.FragmentLocationBinding
 import com.example.weather_app.databinding.FragmentSettingsBinding
@@ -22,7 +23,7 @@ class LocationFragment : Fragment(), LocationCardClickListener {
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
 
-    override fun onLocationCardClick(location: WeatherData) {
+    override fun onLocationCardClick(location: CombinedLocationData) {
         viewModel.setCurrentLocation(location)
     }
 
@@ -41,7 +42,9 @@ class LocationFragment : Fragment(), LocationCardClickListener {
         recyclerView.adapter = adapter
 
         viewModel.savedLocations.observe(viewLifecycleOwner) { locations ->
-            adapter.updateLocations(locations)
+            if (!locations.isNullOrEmpty()) {
+                adapter.updateLocations(locations)
+            }
         }
 
         binding.settingsButton.setOnClickListener {

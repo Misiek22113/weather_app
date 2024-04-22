@@ -3,7 +3,6 @@ package com.example.weather_app
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val updateLocationsRunnable = object : Runnable {
         override fun run() {
             if(viewModel.isInternetConnectionEstablished()){
-                viewModel.updateSavedLocations()
-                viewModel.updateSelectedLocationWeather()
+                viewModel.updateSavedLocationsData()
             }
             handler.postDelayed(this, 300000)
             Toast.makeText(applicationContext, "Data updated", Toast.LENGTH_SHORT).show()
@@ -55,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
-        viewModel.setLocations()
+        viewModel.getLocationsFromStorage()
 
     }
 
