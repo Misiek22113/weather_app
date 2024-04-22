@@ -8,6 +8,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather_app.BuildConfig
 import com.example.weather_app.MainActivity
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.adapter.SearchLocationAdapter
@@ -21,6 +22,7 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
     private val viewModel: MainActivityViewModel by activityViewModels()
     private val binding get() = _binding!!
     private lateinit var searchLocationsAdapter: SearchLocationAdapter
+    private val apiKey = BuildConfig.API_KEY
 
     //TODO Fix bug that navbar don't know where it is
     private fun onNavigate() {
@@ -28,7 +30,7 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
     }
 
     override fun onSearchLocationCardClick(location: Location) {
-        viewModel.fetchLocationData(location.lat, location.lon, "4bf2d9ba39b3f65d6d56ced5607fee4b")
+        viewModel.fetchLocationData(location.lat, location.lon, apiKey)
         onNavigate()
     }
 
@@ -54,7 +56,7 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
                     viewModel.fetchLocation(
                         query,
                         5,
-                        "4bf2d9ba39b3f65d6d56ced5607fee4b",
+                        apiKey,
                         searchLocationsAdapter
                     )
                 }

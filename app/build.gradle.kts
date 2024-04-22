@@ -8,13 +8,18 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        buildConfigField("String", "API_KEY", "\"${properties["OPENWEATHER_API_KEY"]}\"")
         applicationId = "com.example.weather_app"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {

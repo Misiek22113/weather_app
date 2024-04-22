@@ -22,6 +22,7 @@ import java.text.DecimalFormat
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
+    val apiKey = BuildConfig.API_KEY
     var retrofit = RetrofitWeatherClient.create()
     var text = MutableLiveData<String>()
     var currentLocation = MutableLiveData<SavedLocation>()
@@ -152,7 +153,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 val updatedLocation = fetchUpdateLocationData(
                     savedLocation.lat,
                     savedLocation.lon,
-                    "4bf2d9ba39b3f65d6d56ced5607fee4b"
+                    apiKey
                 )
                 updatedLocation?.let {
                     val newSavedLocation = SavedLocation(
@@ -176,12 +177,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun updateSelectedLocationWeather() {
         CoroutineScope(Dispatchers.IO).launch {
+            Log.i("Logcat", ("Api_key: $apiKey").toString())
             val currentLocation = currentLocation.value
             currentLocation?.let {
                 val updatedLocation = fetchUpdateLocationData(
                     it.lat,
                     it.lon,
-                    "4bf2d9ba39b3f65d6d56ced5607fee4b"
+                    apiKey
                 )
                 updatedLocation?.let {
                     withContext(Dispatchers.Main) {

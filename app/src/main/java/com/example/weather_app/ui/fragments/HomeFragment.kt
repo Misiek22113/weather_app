@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.weather_app.databinding.FragmentHomeBinding
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.weather_app.BuildConfig
 import com.example.weather_app.MainActivityViewModel
 import com.example.weather_app.R
 
@@ -19,8 +20,8 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val viewModel: MainActivityViewModel by activityViewModels()
-
     private val binding get() = _binding!!
+    private val apiKey = BuildConfig.API_KEY
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -32,10 +33,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val apiKey = "4bf2d9ba39b3f65d6d56ced5607fee4b"
 
         viewModel.getCurrentLocation()
         viewModel.getCurrentLocationForecast()
+
 
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
@@ -108,12 +109,12 @@ class HomeFragment : Fragment() {
                     dayOfTheWeekTextView.text = viewModel.getHour(data.dt)
                     forecastWeatherIconImageView.setImageResource(
                         viewModel.getWeatherIcon(
-                            data.weather?.get(0)?.main ?: "Clear",
-                            data.weather?.get(0)?.description ?: "Clear"
+                            data.weather[0].main ?: "Clear",
+                            data.weather[0].description ?: "Clear"
                         )
                     )
                     forecastTemperatureTextView.text =
-                        viewModel.getTemperature(data.main?.temp ?: 0.0).toString()
+                        viewModel.getTemperature(data.main.temp ?: 0.0).toString()
                             .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
 
                     binding.forecastLinearLayout.addView(forecastCard)

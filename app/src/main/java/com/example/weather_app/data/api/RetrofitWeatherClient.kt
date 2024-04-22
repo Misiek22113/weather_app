@@ -9,7 +9,6 @@ import retrofit2.http.Query
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-//TODO move to coroutine (change return Response not Call)
 interface ApiWeatherService {
     @GET("data/2.5/forecast")
     suspend fun getForecastWeather(
