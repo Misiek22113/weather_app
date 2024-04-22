@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,8 +31,14 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
     }
 
     override fun onSearchLocationCardClick(location: Location) {
-        viewModel.fetchLocationData(location.lat, location.lon, apiKey)
-        onNavigate()
+        if(viewModel.isInternetConnectionEstablished()){
+            viewModel.fetchLocationData(location.lat, location.lon, apiKey)
+            onNavigate()
+        }
+        else {
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 
@@ -52,13 +59,16 @@ class SearchFragment : Fragment(), SearchLocationCardClickListener {
 
         binding.locationSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
+                if (query != null && viewModel.isInternetConnectionEstablished()) {
                     viewModel.fetchLocation(
                         query,
                         5,
                         apiKey,
                         searchLocationsAdapter
                     )
+                }
+                else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
                 }
                 return true
             }

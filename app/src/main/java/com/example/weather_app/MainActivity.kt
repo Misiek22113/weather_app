@@ -22,8 +22,10 @@ class MainActivity : AppCompatActivity() {
     private var handler = Handler(Looper.getMainLooper())
     private val updateLocationsRunnable = object : Runnable {
         override fun run() {
-            viewModel.updateSavedLocations()
-            viewModel.updateSelectedLocationWeather()
+            if(viewModel.isInternetConnectionEstablished()){
+                viewModel.updateSavedLocations()
+                viewModel.updateSelectedLocationWeather()
+            }
             handler.postDelayed(this, 300000)
             Toast.makeText(applicationContext, "Data updated", Toast.LENGTH_SHORT).show()
         }

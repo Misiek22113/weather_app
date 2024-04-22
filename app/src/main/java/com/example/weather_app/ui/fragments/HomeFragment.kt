@@ -33,19 +33,26 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         viewModel.getCurrentLocation()
         viewModel.getCurrentLocationForecast()
 
-
         viewModel.currentLocation.observe(viewLifecycleOwner) {
-            viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
-            viewModel.fetchForecastWeather(it.lat, it.lon, apiKey)
+            if(viewModel.isInternetConnectionEstablished()){
+                viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+                viewModel.fetchForecastWeather(it.lat, it.lon, apiKey)
+            } else {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.refreshButton.setOnClickListener {
             viewModel.currentLocation.value?.let {
-                viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+                if(viewModel.isInternetConnectionEstablished()){
+                    viewModel.fetchCurrentWeather(it.lat, it.lon, apiKey)
+                }
+                else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+                }
             }
             Toast.makeText(context, "Weather has been updated", Toast.LENGTH_SHORT).show()
         }

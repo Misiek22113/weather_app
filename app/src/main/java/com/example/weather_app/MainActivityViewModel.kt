@@ -3,6 +3,8 @@ package com.example.weather_app
 import SharedPreferences
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -33,6 +35,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val selectedLocationForecastData = MutableLiveData<WeatherForecastResponse?>()
     val selectedLocationWeather: MutableLiveData<WeatherResponse?> get() = selectedLocationData
     val selectedLocationForecast: MutableLiveData<WeatherForecastResponse?> get() = selectedLocationForecastData
+    private val internetConnectionManager: ConnectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    fun isInternetConnectionEstablished(): Boolean {
+        val activeNetwork = internetConnectionManager.activeNetwork
+        return activeNetwork != null
+    }
+
 
     fun fetchLocation(
         query: String,
