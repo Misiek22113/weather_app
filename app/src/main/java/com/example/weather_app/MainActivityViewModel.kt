@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.CombinedLocationData
@@ -100,8 +99,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun updateSavedLocationsData() {
         CoroutineScope(Dispatchers.IO).launch {
-            val locations = locations.value?.toMutableList() ?: mutableListOf()
-            locations.forEachIndexed { index, savedLocation ->
+            val tempLocations = locations.value?.toMutableList() ?: mutableListOf()
+            tempLocations.forEachIndexed { index, savedLocation ->
                 val updatedLocationWeatherData = fetchLocationData(
                     savedLocation.weatherData.coord.lat,
                     savedLocation.weatherData.coord.lon
@@ -115,8 +114,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                     updatedLocationForecastData!!,
                     Time(System.currentTimeMillis()).time
                 )
-                locations[index] = combinedLocationData
-                sharedPreferences.saveLocations(locations)
+                tempLocations[index] = combinedLocationData
+            }
+            sharedPreferences.saveLocations(tempLocations)
+            withContext(Dispatchers.Main) {
+                locations.value = tempLocations
             }
         }
     }
