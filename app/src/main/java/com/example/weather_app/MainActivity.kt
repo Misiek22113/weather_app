@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         override fun run() {
             if (viewModel.isInternetConnectionEstablished()) {
                 viewModel.updateSavedLocationsData()
+                viewModel.updateCurrentLocationData()
             }
             handler.postDelayed(this, 300000)
             Toast.makeText(applicationContext, "Data updated", Toast.LENGTH_SHORT).show()

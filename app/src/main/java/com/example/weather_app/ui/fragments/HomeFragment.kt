@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
 
         binding.refreshButton.setOnClickListener {
             if (viewModel.isInternetConnectionEstablished()) {
+                viewModel.updateCurrentLocationData()
                 viewModel.updateSavedLocationsData()
                 Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
             } else {
@@ -77,6 +78,11 @@ class HomeFragment : Fragment() {
                 .plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
             binding.visibility.dataDescription.text = "visibility"
             binding.visibility.dataValue.text = it?.weatherData?.visibility.toString().plus(" m")
+            binding.updateDataText.text = "Updated ".plus(
+                viewModel.getUpdateTime(
+                    viewModel.currentLocation.value?.lastUpdate ?: 0
+                )
+            ).plus(" min ago")
         }
 
         viewModel.currentLocation.observe(viewLifecycleOwner) { forecastData ->

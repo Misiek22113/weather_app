@@ -33,4 +33,5 @@
     <string name="weather_description">Clear sky</string>
     <string name="temperature">25°C</string>
     <string name="day_of_the_week">Monday</string>
+    <string name="lastUpdate">Updated 0 min ago</string>
 </resources>

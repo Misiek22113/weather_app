@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.example.weather_app.adapter.SearchLocationAdapter
 import com.example.weather_app.data.api.RetrofitWeatherClient
 import com.example.weather_app.data_classes.CombinedLocationData
@@ -19,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.sql.Time
 import java.text.DecimalFormat
 
 
@@ -110,7 +112,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 )
                 val combinedLocationData = CombinedLocationData(
                     updatedLocationWeatherData!!,
-                    updatedLocationForecastData!!
+                    updatedLocationForecastData!!,
+                    Time(System.currentTimeMillis()).time
                 )
                 locations[index] = combinedLocationData
                 sharedPreferences.saveLocations(locations)
@@ -118,13 +121,43 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun updateCurrentLocationData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val currentLocation = currentLocation.value
+            if (currentLocation != null) {
+                val updatedLocationWeatherData = fetchLocationData(
+                    currentLocation.weatherData.coord.lat,
+                    currentLocation.weatherData.coord.lon
+                )
+                val updatedLocationForecastData = fetchForecastWeather(
+                    currentLocation.weatherData.coord.lat,
+                    currentLocation.weatherData.coord.lon
+                )
+                val combinedLocationData = CombinedLocationData(
+                    updatedLocationWeatherData!!,
+                    updatedLocationForecastData!!,
+                    Time(System.currentTimeMillis()).time
+                )
+//                updateSingleSavedLocation(combinedLocationData)
+                setCurrentLocation(combinedLocationData)
+            }
+        }
+    }
+
+//    private fun updateSingleSavedLocation(data: CombinedLocationData) {
+//        val locations = locations.value?.toMutableList() ?: mutableListOf()
+//        val index = locations.indexOf(currentLocation.value)
+//        locations[index] = data
+//    }
+
     private suspend fun addLocation(
         locationData: WeatherData,
         locationForecast: WeatherForecastResponse
     ) {
         val combinedLocationData = CombinedLocationData(
             locationData,
-            locationForecast
+            locationForecast,
+            Time(System.currentTimeMillis()).time
         )
 
         withContext(Dispatchers.Main) {
@@ -149,13 +182,15 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun setCurrentLocation(location: CombinedLocationData) {
-        this.currentLocation.value = location
-        sharedPreferences.setCurrentWeatherLocation(location)
+        CoroutineScope(Dispatchers.Main).launch {
+            this@MainActivityViewModel.currentLocation.value = location
+            sharedPreferences.setCurrentWeatherLocation(location)
+        }
     }
 
     fun getCurrentLocation() {
         val location = sharedPreferences.getCurrentWeatherLocation()
-        if(location != null) {
+        if (location != null) {
             this.currentLocation.value = location
         }
     }
@@ -165,6 +200,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             it.weatherData.coord.lat == location.lat && it.weatherData.coord.lon == location.lon
         }
             ?: false
+    }
+
+    fun getUpdateTime(time: Long): Long {
+        return (System.currentTimeMillis() - time) / 1000 / 60
     }
 
     fun getLocationsFromStorage() {
