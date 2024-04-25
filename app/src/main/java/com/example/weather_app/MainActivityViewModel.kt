@@ -154,7 +154,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getCurrentLocation() {
-        this.currentLocation.value = sharedPreferences.getCurrentWeatherLocation()
+        val location = sharedPreferences.getCurrentWeatherLocation()
+        if(location != null) {
+            this.currentLocation.value = location
+        }
     }
 
     fun isLocationSaved(location: Location): Boolean {
