@@ -83,6 +83,19 @@ class HomeFragment : Fragment() {
                     viewModel.currentLocation.value?.lastUpdate ?: 0
                 )
             ).plus(" min ago")
+
+            val newElement = binding.root.findViewById<View>(R.id.seaLevel)
+
+            if(newElement != null) {
+                binding.seaLevel?.dataDescription?.text = "sea level"
+                binding.seaLevel?.dataValue?.text = it?.weatherData?.main?.seaLevel.toString().plus(" hPa")
+                binding.tempMin?.dataDescription?.text = "temp min"
+                binding.tempMin?.dataValue?.text = viewModel.getTemperature(it?.weatherData?.main?.tempMin ?: 0.0).toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+                binding.tempMax?.dataDescription?.text = "temp max"
+                binding.tempMax?.dataValue?.text = viewModel.getTemperature(it?.weatherData?.main?.tempMax ?: 0.0).toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
+                binding.grndLevel?.dataDescription?.text = "grnd level"
+                binding.grndLevel?.dataValue?.text = it?.weatherData?.main?.groundLevel.toString().plus(" hPa")
+            }
         }
 
         viewModel.currentLocation.observe(viewLifecycleOwner) { forecastData ->
