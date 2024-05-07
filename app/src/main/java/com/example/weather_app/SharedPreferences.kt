@@ -50,12 +50,10 @@ class SharedPreferences(context: Context) {
     }
 
     fun setSpeedUnit(unit: String) {
-        Log.i("Logcat", ("setSpeedUni: $unit").toString())
         sharedPref.edit().putString(speedUnitKey, unit).apply()
     }
 
     fun getSpeedUnit(): String {
-        Log.i("Logcat", ("getSpeedUnit: ${sharedPref.getString(speedUnitKey, "m/s")}").toString())
         return sharedPref.getString(speedUnitKey, "m/s")!!
     }
 

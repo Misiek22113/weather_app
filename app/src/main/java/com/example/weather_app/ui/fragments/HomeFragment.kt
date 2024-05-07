@@ -2,6 +2,7 @@ package com.example.weather_app.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,14 +88,15 @@ class HomeFragment : Fragment() {
             val newElement = binding.root.findViewById<View>(R.id.seaLevel)
 
             if(newElement != null) {
+                Log.i("Logcat", it?.weatherData?.main?.seaLevel.toString())
                 binding.seaLevel?.dataDescription?.text = "sea level"
-                binding.seaLevel?.dataValue?.text = it?.weatherData?.main?.seaLevel.toString().plus(" hPa")
+                binding.seaLevel?.dataValue?.text = it?.weatherData?.main?.seaLevel.toString().plus(" m amsl")
                 binding.tempMin?.dataDescription?.text = "temp min"
                 binding.tempMin?.dataValue?.text = viewModel.getTemperature(it?.weatherData?.main?.tempMin ?: 0.0).toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
                 binding.tempMax?.dataDescription?.text = "temp max"
                 binding.tempMax?.dataValue?.text = viewModel.getTemperature(it?.weatherData?.main?.tempMax ?: 0.0).toString().plus("°" + viewModel.getTemperatureUnit().slice(0..0).uppercase())
                 binding.grndLevel?.dataDescription?.text = "grnd level"
-                binding.grndLevel?.dataValue?.text = it?.weatherData?.main?.groundLevel.toString().plus(" hPa")
+                binding.grndLevel?.dataValue?.text = it?.weatherData?.main?.groundLevel.toString().plus(" m amsl")
             }
         }
 
