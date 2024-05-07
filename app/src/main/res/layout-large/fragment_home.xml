@@ -33,7 +33,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/location_name"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="45sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/example_temp"
                 android:textColor="@color/white"
-                android:textSize="50sp"
+                android:textSize="70sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/locationNameText" />
@@ -60,7 +60,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/weather_description"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,8 +68,8 @@
 
             <ImageView
                 android:id="@+id/weatherIcon"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@drawable/few_clouds"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +80,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:paddingTop="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -231,9 +232,10 @@
                 android:id="@+id/updateDataText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/lastUpdate"
                 android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
